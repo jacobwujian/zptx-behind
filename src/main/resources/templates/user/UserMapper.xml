@@ -37,7 +37,7 @@
 
 
     <select id="selectUserInfoByPk_user" parameterType="com.ecit.edu.zpxtbehind.user.bean.UserInfo" resultType="com.ecit.edu.zpxtbehind.user.bean.UserInfo">
-        select * from userinfo where userName= #{userName,jdbcType=VARCHAR}
+        select * from userinfo where pk_user= #{pk_user,jdbcType=VARCHAR}
     </select>
     <insert id="insertUserInfo" parameterType="com.ecit.edu.zpxtbehind.user.bean.UserInfo">
         insert into userinfo (pk_user,name,age,userInfo,school,phone,IDCard) values (#{pk_user,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{userInfo,jdbcType=VARCHAR},#{school,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{IDCard,jdbcType=VARCHAR}})

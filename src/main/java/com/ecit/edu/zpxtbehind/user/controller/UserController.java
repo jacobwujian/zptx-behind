@@ -6,10 +6,7 @@ import com.ecit.edu.zpxtbehind.user.bean.User;
 import com.ecit.edu.zpxtbehind.user.bean.UserInfo;
 import com.ecit.edu.zpxtbehind.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -103,16 +100,37 @@ public class UserController {
     }
     // 用户登陆信息
     @ResponseBody
-    @RequestMapping("userInfo")
+    @RequestMapping(value = "userInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public String userInfo(@RequestBody JSONObject jsonParam) {
         UserInfo userInfo=new UserInfo();
         int pk_user=(Integer)jsonParam.get("pk_user");
         userInfo.setPk_user(pk_user);
         UserInfo getUserInfo=userService.selectUserInfoByPk_user(userInfo);
         JSONObject result = new JSONObject();
-        result.put("code", 20000);
+        JSONObject data = new JSONObject();
+        data.put("roles", new String[]{"admin"});
+        data.put("avatar", "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png");
+        data.put("introduction", "I am a super administrator");
+        data.put("userName", "管理员");
+        data.put("name", getUserInfo.getName());
+        data.put("userPk", -1);
+        data.put("tenantName", -1);
+        data.put("tenantPk", -1);
+        data.put("defaultOrg", new String[0]);
+        result.put("data",data);
+        result.put("code",20000);
         result.put("message", "success");
         result.put("result", getUserInfo);
+        return result.toJSONString();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "logout", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public String logOut() {
+
+        JSONObject result = new JSONObject();
+        result.put("code",20000);
+
         return result.toJSONString();
     }
 }
