@@ -1,7 +1,9 @@
 package com.ecit.edu.zpxtbehind.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ecit.edu.zpxtbehind.user.EncryptHelper;
 import com.ecit.edu.zpxtbehind.user.bean.User;
+import com.ecit.edu.zpxtbehind.user.bean.UserInfo;
 import com.ecit.edu.zpxtbehind.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,11 +90,29 @@ public class UserController {
         Base64.Decoder decoder = Base64.getDecoder();
         String pw = new String(decoder.decode(password));
         user.setPassword(username+pw);
-        Boolean isTrue=userService.login(user);
+        User getUser=userService.login(user);
+        Boolean isTrue = EncryptHelper.unencrypt(getUser.getPassword()).equals(user.getPassword());
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
         result.put("result", isTrue);
+        if (isTrue) {
+            result.put("token",getUser);
+        }
+        return result.toJSONString();
+    }
+    // 用户登陆信息
+    @ResponseBody
+    @RequestMapping("userInfo")
+    public String userInfo(@RequestBody JSONObject jsonParam) {
+        UserInfo userInfo=new UserInfo();
+        int pk_user=(Integer)jsonParam.get("pk_user");
+        userInfo.setPk_user(pk_user);
+        UserInfo getUserInfo=userService.selectUserInfoByPk_user(userInfo);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        result.put("result", getUserInfo);
         return result.toJSONString();
     }
 }
