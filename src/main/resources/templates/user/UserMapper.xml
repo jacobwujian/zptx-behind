@@ -9,6 +9,12 @@
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
         <result column="modifiedtime" jdbcType="TIMESTAMP" property="modifiedtime"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="school" jdbcType="VARCHAR" property="school"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="IDCard" jdbcType="VARCHAR" property="IDCard"/>
     </resultMap>
     <resultMap id="UserInfoResultMap" type="com.ecit.edu.zpxtbehind.user.bean.UserInfo">
         <id column="pk_userInfo" jdbcType="INTEGER" property="pk_userInfo"/>
@@ -25,18 +31,49 @@
     <select id="selectUser" resultMap="BaseResultMap">
         select * from user
     </select>
-    <select id="selectUserByName" parameterType="com.ecit.edu.zpxtbehind.user.bean.User" resultType="com.ecit.edu.zpxtbehind.user.bean.User">
+    <select id="selectUserByName" parameterType="com.ecit.edu.zpxtbehind.user.bean.User"
+            resultType="com.ecit.edu.zpxtbehind.user.bean.User">
         select * from user where userName= #{userName,jdbcType=VARCHAR}
     </select>
-    <insert id="insertUser" parameterType="com.ecit.edu.zpxtbehind.user.bean.User">
-        insert into user (userName,userType,password) values (#{userName,jdbcType=VARCHAR},#{userType,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR})
+    <select id="selectUserByPk_user" parameterType="com.ecit.edu.zpxtbehind.user.bean.User"
+            resultType="com.ecit.edu.zpxtbehind.user.bean.User">
+        select * from user where pk_user= #{pk_user,jdbcType=VARCHAR}
+    </select>
+    <select id="selectUserByExample" parameterType="com.ecit.edu.zpxtbehind.user.bean.User" resultMap="BaseResultMap">
+        select * from user where pk_user= #{pk_user,jdbcType=VARCHAR}
+    </select>
+    <insert id="insertUser" keyProperty="pk_user" useGeneratedKeys="true" parameterType="com.ecit.edu.zpxtbehind.user.bean.User" >
+        insert into user (userName,userType,password,name,introduction,IDCard,phone,school) values
+        (
+        #{userName,jdbcType=VARCHAR},
+        #{userType,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR},
+        #{introduction,jdbcType=VARCHAR},
+        #{IDCard,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR},
+        #{school,jdbcType=VARCHAR}
+        )
     </insert>
     <update id="updateUserPassword" parameterType="com.ecit.edu.zpxtbehind.user.bean.User">
         update user set password=#{password,jdbcType=VARCHAR} where userName= #{userName,jdbcType=VARCHAR}
     </update>
+    <update id="updateUserByPk_user" parameterType="com.ecit.edu.zpxtbehind.user.bean.User">
+        update user set
+       userName= #{userName,jdbcType=VARCHAR},
+       userType= #{userType,jdbcType=VARCHAR},
+       password= #{password,jdbcType=VARCHAR},
+        name=#{name,jdbcType=VARCHAR},
+       introduction= #{introduction,jdbcType=VARCHAR},
+        IDCard=#{IDCard,jdbcType=VARCHAR},
+        phone=#{phone,jdbcType=VARCHAR},
+        school=#{school,jdbcType=VARCHAR},
+        password=#{password,jdbcType=VARCHAR}
+        where pk_user = #{pk_user,jdbcType=INTEGER}
+    </update>
 
-
-    <select id="selectUserInfoByPk_user" parameterType="com.ecit.edu.zpxtbehind.user.bean.UserInfo" resultType="com.ecit.edu.zpxtbehind.user.bean.UserInfo">
+    <select id="selectUserInfoByPk_user" parameterType="com.ecit.edu.zpxtbehind.user.bean.UserInfo"
+            resultType="com.ecit.edu.zpxtbehind.user.bean.UserInfo">
         select * from userinfo where pk_user= #{pk_user,jdbcType=VARCHAR}
     </select>
     <insert id="insertUserInfo" parameterType="com.ecit.edu.zpxtbehind.user.bean.UserInfo">
@@ -44,14 +81,14 @@
     </insert>
     <update id="updateUserInfo" parameterType="com.ecit.edu.zpxtbehind.user.bean.UserInfo">
         update userinfo
-         <set>
-             <if test="name!=null">name = #{name,jdbcType=VARCHAR} </if>
-             <if test="age!=null">age = #{age,jdbcType=INTEGER} </if>
-             <if test="userInfo!=null">userInfo = #{userInfo,jdbcType=VARCHAR} </if>
-             <if test="school!=null">school = #{school,jdbcType=VARCHAR} </if>
-             <if test="phone!=null">phone = #{phone,jdbcType=VARCHAR} </if>
-             <if test="IDCard!=null">IDCard = #{IDCard,jdbcType=VARCHAR} </if>
-         </set>
-         where pk_userInfo= #{pk_userInfo,jdbcType=Integer}
+        <set>
+            <if test="name!=null">name = #{name,jdbcType=VARCHAR}</if>
+            <if test="age!=null">age = #{age,jdbcType=INTEGER}</if>
+            <if test="userInfo!=null">userInfo = #{userInfo,jdbcType=VARCHAR}</if>
+            <if test="school!=null">school = #{school,jdbcType=VARCHAR}</if>
+            <if test="phone!=null">phone = #{phone,jdbcType=VARCHAR}</if>
+            <if test="IDCard!=null">IDCard = #{IDCard,jdbcType=VARCHAR}</if>
+        </set>
+        where pk_userInfo= #{pk_userInfo,jdbcType=Integer}
     </update>
 </mapper>

@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -30,12 +31,18 @@ public class UserController {
     // 获取所有用户信息
     @ResponseBody
     @RequestMapping("getAllUsers")
-    public String getAllUsers(HttpServletRequest request) {
+    public String getAllUsers() throws NoSuchPaddingException, UnsupportedEncodingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException {
         List<User> users = userService.getAllUsers();
+        List<User> newUsers =new ArrayList<>();
+        for (User user:users) {
+            String pa=EncryptHelper.unencrypt(user.getPassword()).substring(user.getUserName().length());
+            user.setPassword(pa);
+            newUsers.add(user);
+        }
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
-        result.put("data", users);
+        result.put("data", newUsers);
         return result.toJSONString();
     }
 
@@ -43,20 +50,67 @@ public class UserController {
     @ResponseBody
     @RequestMapping("insertUser")
     public String insertUser(@RequestBody JSONObject jsonParam) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, UnsupportedEncodingException, InvalidKeyException, InvalidKeySpecException {
-        String username=(String)jsonParam.get("username");
-        String password = (String)jsonParam.get("password");
+        String username=(String)jsonParam.get("userName");
+        String password = jsonParam.get("userName")+(String)jsonParam.get("password");
+        String name = (String)jsonParam.get("name");
+        String userType = (String)jsonParam.get("userType");
+        String introduction = (String)jsonParam.get("introduction");
+        String avatar = (String)jsonParam.get("avatar");
+        String IDCard = (String)jsonParam.get("IDCard");
+        String phone = (String)jsonParam.get("phone");
+        String school = (String)jsonParam.get("school");
         User user=new User();
         user.setUserName(username);
         password = encrypt(password);
-        user.setUserType("0");
+        user.setUserType(userType);
         user.setPassword(password);
+        user.setName(name);
+        user.setIDCard(IDCard);
+        user.setPhone(phone);
+        user.setSchool(school);
+        user.setIntroduction(introduction);
+        user.setAvatar(avatar);
         userService.insertUser(user);
+        user.setPassword((String)jsonParam.get("password"));
+        JSONObject result = new JSONObject();
+        result.put("user", user);
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+    // 插入用户信息
+    @ResponseBody
+    @RequestMapping("updateUserByPk_user")
+    public String updateUserByPk_user(@RequestBody JSONObject jsonParam) throws NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, UnsupportedEncodingException, InvalidKeyException, InvalidKeySpecException {
+        int pk_user=(Integer)jsonParam.get("pk_user");
+        String username=(String)jsonParam.get("userName");
+        String password = jsonParam.get("userName")+(String)jsonParam.get("password");
+        String name = (String)jsonParam.get("name");
+        String userType = (String)jsonParam.get("userType");
+        String introduction = (String)jsonParam.get("introduction");
+        String avatar = (String)jsonParam.get("avatar");
+        String IDCard = (String)jsonParam.get("IDCard");
+        String phone = (String)jsonParam.get("phone");
+        String school = (String)jsonParam.get("school");
+
+        User user=new User();
+        user.setPk_user(pk_user);
+        user.setUserName(username);
+        password = encrypt(password);
+        user.setUserType(userType);
+        user.setPassword(password);
+        user.setName(name);
+        user.setIDCard(IDCard);
+        user.setPhone(phone);
+        user.setSchool(school);
+        user.setIntroduction(introduction);
+        user.setAvatar(avatar);
+        userService.updateUserByPk_user(user);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
         return result.toJSONString();
     }
-
     // 修改用户密码
     @ResponseBody
     @RequestMapping("updateUserPassword")
@@ -94,25 +148,25 @@ public class UserController {
         result.put("message", "success");
         result.put("result", isTrue);
         if (isTrue) {
-            result.put("token",getUser);
+            user.setPk_user(getUser.getPk_user());
+            result.put("token",user);
         }
         return result.toJSONString();
     }
     // 用户登陆信息
     @ResponseBody
-    @RequestMapping(value = "userInfo", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping("userInfo")
     public String userInfo(@RequestBody JSONObject jsonParam) {
-        UserInfo userInfo=new UserInfo();
+        User user=new User();
         int pk_user=(Integer)jsonParam.get("pk_user");
-        userInfo.setPk_user(pk_user);
-        UserInfo getUserInfo=userService.selectUserInfoByPk_user(userInfo);
+        user.setPk_user(pk_user);
+        User getUser=userService.selectUserByPk_user(user);
         JSONObject result = new JSONObject();
         JSONObject data = new JSONObject();
-        data.put("roles", new String[]{"admin"});
-        data.put("avatar", "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png");
-        data.put("introduction", "I am a super administrator");
-        data.put("userName", "管理员");
-        data.put("name", getUserInfo.getName());
+        data.put("roles", new String[]{getUser.getUserType()});
+        data.put("avatar", getUser.getAvatar());
+        data.put("introduction", getUser.getIntroduction());
+        data.put("name", getUser.getName());
         data.put("userPk", -1);
         data.put("tenantName", -1);
         data.put("tenantPk", -1);
@@ -120,7 +174,6 @@ public class UserController {
         result.put("data",data);
         result.put("code",20000);
         result.put("message", "success");
-        result.put("result", getUserInfo);
         return result.toJSONString();
     }
 

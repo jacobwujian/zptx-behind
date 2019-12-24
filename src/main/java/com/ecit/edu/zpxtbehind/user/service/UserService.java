@@ -29,9 +29,15 @@ public class UserService {
     public User login(User user) {
         return userMapper.selectUserByName(user);
     }
+    public void updateUserByPk_user(User user) {
+        userMapper.updateUserByPk_user(user);
+    }
 
     public UserInfo selectUserInfoByPk_user(UserInfo userInfo) {
         return userMapper.selectUserInfoByPk_user(userInfo);
+    }
+    public User selectUserByPk_user(User user) {
+        return userMapper.selectUserByPk_user(user);
     }
     public void insertUserInfo(UserInfo userInfo) {
         userMapper.insertUserInfo(userInfo);

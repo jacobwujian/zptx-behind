@@ -42,7 +42,6 @@ enum EncryptType {
     }
 
 }
-
 public final class EncryptHelper {
 
 

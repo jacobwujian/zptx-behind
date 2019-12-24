@@ -12,7 +12,8 @@ public interface UserMapper {
     void insertUser(User user);
     void updateUserPassword(User user);
     User selectUserByName(User user);
-
+    User selectUserByPk_user(User user);
+    void updateUserByPk_user(User user);
     UserInfo selectUserInfoByPk_user(UserInfo userInfo);
     void insertUserInfo(UserInfo userInfo);
     void updateUserInfo(UserInfo userInfo);
