@@ -2,7 +2,6 @@ package com.ecit.edu.zpxtbehind.user.service;
 
 
 import com.ecit.edu.zpxtbehind.user.bean.User;
-import com.ecit.edu.zpxtbehind.user.bean.UserInfo;
 import com.ecit.edu.zpxtbehind.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
@@ -32,18 +31,14 @@ public class UserService {
     public void updateUserByPk_user(User user) {
         userMapper.updateUserByPk_user(user);
     }
-
-    public UserInfo selectUserInfoByPk_user(UserInfo userInfo) {
-        return userMapper.selectUserInfoByPk_user(userInfo);
+    public List<User> selectUserByExample(User user) {
+        return userMapper.selectUserByExample(user);
     }
     public User selectUserByPk_user(User user) {
         return userMapper.selectUserByPk_user(user);
     }
-    public void insertUserInfo(UserInfo userInfo) {
-        userMapper.insertUserInfo(userInfo);
-    }
-    public void updateUserInfo(UserInfo userInfo) {
-        userMapper.updateUserInfo(userInfo);
+    public User selectUserByName(User user) {
+        return userMapper.selectUserByName(user);
     }
 
 
