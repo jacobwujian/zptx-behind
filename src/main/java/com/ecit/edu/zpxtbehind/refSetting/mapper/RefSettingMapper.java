@@ -6,4 +6,9 @@ import java.util.List;
 
 public interface RefSettingMapper {
     List<RefTypeSetting> selectAllRefType();
+    RefTypeSetting selectRefTypeByPk_type(RefTypeSetting refTypeSetting);
+    List<RefTypeSetting> selectAllRefTypeByParent(RefTypeSetting refTypeSetting);
+    void insertType(RefTypeSetting refTypeSetting);
+    void resetChildren(RefTypeSetting refTypeSetting);
+    void deleteType(RefTypeSetting refTypeSetting);
 }

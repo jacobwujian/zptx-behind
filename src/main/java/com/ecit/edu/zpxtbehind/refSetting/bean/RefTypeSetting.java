@@ -5,16 +5,16 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class RefTypeSetting {
-    private int pk_type;
+    private Integer pk_type;
     private String name;
-    private String parent;
+    private Integer parent;
     private String children;
     private Date ts;
-    public int getPk_type() {
+    public Integer getPk_type() {
         return pk_type;
     }
 
-    public void setPk_type(int pk_type) {
+    public void setPk_type(Integer pk_type) {
         this.pk_type = pk_type;
     }
 
@@ -26,11 +26,11 @@ public class RefTypeSetting {
         this.name = name;
     }
 
-    public String getParent() {
+    public Integer getParent() {
         return parent;
     }
 
-    public void setParent(String parent) {
+    public void setParent(Integer parent) {
         this.parent = parent;
     }
 
@@ -49,14 +49,14 @@ public class RefTypeSetting {
     public void setTs(Date ts) {
         this.ts = ts;
     }
-    public void setParentArry(ArrayList arry){
+    public void setChildrenArry(ArrayList arry){
         if (arry!=null) {
-            this.parent = arry.toString();
+            this.children = arry.toString();
         }
     }
-    public ArrayList getParentArry(){
-        if (this.parent!=null) {
-            return new ArrayList<>(Arrays.asList(this.parent.split(",")));
+    public ArrayList getChildrenArry(){
+        if (this.children!=null&&!this.children.equals("[]")) {
+            return new ArrayList<>(Arrays.asList(this.children.substring(1,this.children.length()-1).split(",")));
         }
         else {return null;}
     }
