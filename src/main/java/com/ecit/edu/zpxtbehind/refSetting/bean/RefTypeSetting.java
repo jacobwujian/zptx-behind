@@ -56,7 +56,7 @@ public class RefTypeSetting {
     }
     public ArrayList getChildrenArry(){
         if (this.children!=null&&!this.children.equals("[]")) {
-            return new ArrayList<>(Arrays.asList(this.children.substring(1,this.children.length()-1).split(",")));
+            return new ArrayList<>(Arrays.asList(this.children.substring(1,this.children.length()-1).split(", ")));
         }
         else {return null;}
     }

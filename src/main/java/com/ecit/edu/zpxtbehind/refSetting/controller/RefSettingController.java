@@ -1,6 +1,7 @@
 package com.ecit.edu.zpxtbehind.refSetting.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ecit.edu.zpxtbehind.refSetting.bean.RefSetting;
 import com.ecit.edu.zpxtbehind.refSetting.bean.RefTypeSetting;
 import com.ecit.edu.zpxtbehind.refSetting.service.RefSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ref")
@@ -19,7 +22,7 @@ public class RefSettingController {
     @Autowired
     private RefSettingService refSettingService;
 
-    // 获取所有用户信息
+    // 获取顶层分类
     @ResponseBody
     @RequestMapping("getAllTypes")
     public String getAllTypes() {
@@ -53,13 +56,27 @@ public class RefSettingController {
         RefTypeSetting refTypeSetting = new RefTypeSetting();
         refTypeSetting.setPk_type((Integer) jsonParam.get("pk_type"));
         refSettingService.deleteType(refTypeSetting);
+        refSettingService.deleteRefByType(refTypeSetting);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+    // 参照改名
+    @ResponseBody
+    @RequestMapping("updateTypeName")
+    public String updateTypeName(@RequestBody JSONObject jsonParam) {
+        RefTypeSetting refTypeSetting = new RefTypeSetting();
+        refTypeSetting.setPk_type((Integer) jsonParam.get("pk_type"));
+        refTypeSetting.setName((String) jsonParam.get("name"));
+        refSettingService.resetTypeName(refTypeSetting);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
         return result.toJSONString();
     }
 
-    // 获取所有用户信息
+    // 存節點信息
     @ResponseBody
     @RequestMapping("setChildren")
     public String setChildren() {
@@ -86,7 +103,7 @@ public class RefSettingController {
         return result.toJSONString();
     }
 
-    // 获取所有用户信息
+    // 获取子節點信息
     @ResponseBody
     @RequestMapping("getChildren")
     public String getChildren(@RequestBody JSONObject jsonParam) {
@@ -111,6 +128,76 @@ public class RefSettingController {
         result.put("code", 20000);
         result.put("message", "success");
         result.put("data", arrayList);
+        return result.toJSONString();
+    }
+
+    // 参照改名
+    @ResponseBody
+    @RequestMapping("updateName")
+    public String updateName(@RequestBody JSONObject jsonParam) {
+        RefSetting refSetting = new RefSetting();
+        refSetting.setPk_ref((Integer) jsonParam.get("pk_ref"));
+        refSetting.setName((String) jsonParam.get("name"));
+        refSettingService.resetName(refSetting);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+
+    // 获取参照
+    @ResponseBody
+    @RequestMapping("selectRef")
+    public String selectRef(@RequestBody JSONObject jsonParam) {
+        Integer type = (Integer) jsonParam.get("type");
+        String name;
+        if (jsonParam.get("name")==null||jsonParam.get("name").equals("")){
+            name = null;
+        }else {
+            name = (String) jsonParam.get("name");
+        }
+        ArrayList arrayList;
+        if (jsonParam.get("children")!=null){
+             arrayList = (ArrayList) jsonParam.get("children");
+        }else {
+             arrayList = new ArrayList();
+        }
+        arrayList.add(type);
+        String arr = arrayList.toString().substring(1,arrayList.toString().length()-1);
+        arr = "(" +arr +")";
+        List<RefSetting>  list=refSettingService.selectInformationByExample(name, arr);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        result.put("data", list);
+        return result.toJSONString();
+    }
+
+    // 刪除參照
+    @ResponseBody
+    @RequestMapping("deleteRef")
+    public String deleteRef(@RequestBody JSONObject jsonParam) {
+        RefSetting refSetting = new RefSetting();
+        refSetting.setPk_ref((Integer) jsonParam.get("pk_ref"));
+        refSettingService.deleteRef(refSetting);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+
+    // 插入参照
+    @ResponseBody
+    @RequestMapping("insertRef")
+    public String insertRef(@RequestBody JSONObject jsonParam) {
+        RefSetting refSetting = new RefSetting();
+        refSetting.setType((Integer) jsonParam.get("type"));
+        refSetting.setName((String) jsonParam.get("name"));
+        refSettingService.insertRef(refSetting);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        result.put("data", refSetting);
         return result.toJSONString();
     }
 }

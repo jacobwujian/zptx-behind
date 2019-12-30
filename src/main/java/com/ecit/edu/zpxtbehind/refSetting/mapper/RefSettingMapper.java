@@ -10,5 +10,6 @@ public interface RefSettingMapper {
     List<RefTypeSetting> selectAllRefTypeByParent(RefTypeSetting refTypeSetting);
     void insertType(RefTypeSetting refTypeSetting);
     void resetChildren(RefTypeSetting refTypeSetting);
+    void resetName(RefTypeSetting refTypeSetting);
     void deleteType(RefTypeSetting refTypeSetting);
 }

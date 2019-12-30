@@ -1,18 +1,22 @@
 package com.ecit.edu.zpxtbehind.refSetting.service;
 
+import com.ecit.edu.zpxtbehind.refSetting.bean.RefSetting;
 import com.ecit.edu.zpxtbehind.refSetting.bean.RefTypeSetting;
+import com.ecit.edu.zpxtbehind.refSetting.mapper.RefInforMapper;
 import com.ecit.edu.zpxtbehind.refSetting.mapper.RefSettingMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RefSettingService {
     @Resource
     RefSettingMapper refSettingMapper;
-
+    @Resource
+    RefInforMapper refInforMapper;
     public List<RefTypeSetting> getAllType() {
         return refSettingMapper.selectAllRefType();
     }
@@ -55,5 +59,24 @@ public class RefSettingService {
             refTypeSetting.setChildrenArry(arrayList);
             refSettingMapper.resetChildren(refTypeSetting);
         }
+    }
+
+    public List<RefSetting> selectInformationByExample(String name,String arr){
+      return   refInforMapper.selectInformationByExample(name,arr);
+    }
+    public void insertRef(RefSetting refSetting){
+        refInforMapper.insertRef(refSetting);
+    }
+    public void deleteRef(RefSetting refSetting){
+        refInforMapper.deleteRef(refSetting);
+    }
+    public void deleteRefByType(RefTypeSetting refSetting){
+        refInforMapper.deleteRefByType(refSetting);
+    }
+    public void resetName(RefSetting refSetting){
+        refInforMapper.resetName(refSetting);
+    }
+    public void resetTypeName(RefTypeSetting refTypeSetting){
+        refSettingMapper.resetName(refTypeSetting);
     }
 }

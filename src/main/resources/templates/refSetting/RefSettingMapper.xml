@@ -7,7 +7,7 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="userType" jdbcType="VARCHAR" property="userType"/>
         <result column="parent" jdbcType="INTEGER" property="parent"/>
-        <result column="children" jdbcType="TIMESTAMP" property="children"/>
+        <result column="children" jdbcType="VARCHAR" property="children"/>
         <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
     </resultMap>
     <select id="selectAllRefType" resultMap="TypeMap">
@@ -30,5 +30,7 @@
     <update id="resetChildren"  parameterType="com.ecit.edu.zpxtbehind.refSetting.bean.RefTypeSetting">
         update ref_type set children = #{children, jdbcType=VARCHAR} where pk_type =#{pk_type, jdbcType=INTEGER}
     </update>
-
+    <update id="resetName"  parameterType="com.ecit.edu.zpxtbehind.refSetting.bean.RefTypeSetting">
+        update ref_type set name = #{name, jdbcType=VARCHAR} where pk_type =#{pk_type, jdbcType=INTEGER}
+    </update>
 </mapper>

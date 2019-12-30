@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecit.edu.zpxtbehind.refSetting.mapper.RefInforMapper">
+    <resultMap id="resultMap" type="com.ecit.edu.zpxtbehind.refSetting.bean.RefSetting">
+        <id column="pk_ref" jdbcType="INTEGER" property="pk_ref"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+    </resultMap>
+    <select id="selectInformationByExample" resultMap="resultMap">
+        select * from ref_infor where type in ${arr}
+        <if test="name!=null">and name like  #{name}</if>
+    </select>
+
+    <insert id="insertRef" parameterType="com.ecit.edu.zpxtbehind.refSetting.bean.RefSetting"  keyProperty="pk_ref" useGeneratedKeys="true" >
+        insert into  ref_infor (name,type) values (#{name, jdbcType=VARCHAR}, #{type, jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteRef"  parameterType="com.ecit.edu.zpxtbehind.refSetting.bean.RefSetting">
+        delete from ref_infor where pk_ref =#{pk_ref, jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteRefByType"  parameterType="com.ecit.edu.zpxtbehind.refSetting.bean.RefTypeSetting">
+        delete from ref_infor where type =#{pk_type, jdbcType=INTEGER}
+    </delete>
+    <update id="resetName"  parameterType="com.ecit.edu.zpxtbehind.refSetting.bean.RefSetting">
+        update ref_infor set name = #{name, jdbcType=VARCHAR} where pk_ref =#{pk_ref, jdbcType=INTEGER}
+    </update>
+
+</mapper>
