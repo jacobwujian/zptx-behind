@@ -19,6 +19,9 @@
     <select id="selectUser" resultMap="BaseResultMap">
         select * from user
     </select>
+    <select id="checkName" parameterType="java.lang.String" resultMap="om.ecit.edu.zpxtbehind.user.bean.User">
+        select * from user where name = #{name}
+    </select>
     <select id="selectUserByName" parameterType="com.ecit.edu.zpxtbehind.user.bean.User"
             resultType="com.ecit.edu.zpxtbehind.user.bean.User">
         select * from user where userName= #{userName,jdbcType=VARCHAR}

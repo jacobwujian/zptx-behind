@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/ref")
@@ -107,7 +105,10 @@ public class RefSettingController {
     @ResponseBody
     @RequestMapping("getChildren")
     public String getChildren(@RequestBody JSONObject jsonParam) {
-        int parent = (int) jsonParam.get("parent");
+        Integer parent = null;
+        if (jsonParam.get("parent")!=null) {
+            parent = (Integer) jsonParam.get("parent");
+        }
         RefTypeSetting refTypeSetting = new RefTypeSetting();
         refTypeSetting.setParent(parent);
         List<RefTypeSetting> types = refSettingService.selectAllRefTypeByParent(refTypeSetting);
@@ -120,6 +121,7 @@ public class RefSettingController {
             JSONObject data = new JSONObject();
             data.put("id",refTypeSetting.getPk_type());
             data.put("label",refTypeSetting.getName());
+            data.put("value",refTypeSetting.getName());
             ArrayList arr=refTypeSetting.getChildrenArry();
             data.put("children", arr);
             arrayList.add(data);

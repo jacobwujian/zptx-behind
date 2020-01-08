@@ -3,63 +3,90 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecit.edu.zpxtbehind.resume.mapper.ResumeMapper">
     <resultMap id="BaseResultMap" type="com.ecit.edu.zpxtbehind.resume.bean.Resume">
-        <id column="pk_user" jdbcType="INTEGER" property="pk_user"/>
-        <result column="userName" jdbcType="VARCHAR" property="userName"/>
-        <result column="userType" jdbcType="VARCHAR" property="userType"/>
-        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <id column="pk_resume" javaType="INTEGER" property="pk_resume"/>
+        <result column="pk_user" jdbcType="INTEGER" property="pk_user"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="school1" jdbcType="VARCHAR" property="school1"/>
+        <result column="school2" jdbcType="VARCHAR" property="school2"/>
+        <result column="school3" jdbcType="VARCHAR" property="school3"/>
+        <result column="schoolType1" jdbcType="VARCHAR" property="schoolType1"/>
+        <result column="schoolType2" jdbcType="VARCHAR" property="schoolType2"/>
+        <result column="schoolType3" jdbcType="VARCHAR" property="schoolType3"/>
+        <result column="start1" jdbcType="TIMESTAMP" property="start1"/>
+        <result column="start2" jdbcType="TIMESTAMP" property="start2"/>
+        <result column="start3" jdbcType="TIMESTAMP" property="start3"/>
+        <result column="end1" jdbcType="TIMESTAMP" property="end1"/>
+        <result column="end2" jdbcType="TIMESTAMP" property="end2"/>
+        <result column="end3" jdbcType="TIMESTAMP" property="end3"/>
         <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
         <result column="modifiedtime" jdbcType="TIMESTAMP" property="modifiedtime"/>
-        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
-        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="school" jdbcType="VARCHAR" property="school"/>
-        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="picture" jdbcType="BLOB" property="picture"/>
         <result column="IDCard" jdbcType="VARCHAR" property="IDCard"/>
-    </resultMap>
-    <select id="selectUser" resultMap="BaseResultMap">
-        select * from user
-    </select>
-    <select id="selectUserByName" parameterType="com.ecit.edu.zpxtbehind.user.bean.User"
-            resultType="com.ecit.edu.zpxtbehind.user.bean.User">
-        select * from user where userName= #{userName,jdbcType=VARCHAR}
-    </select>
-    <select id="selectResumeByPk_user" parameterType="com.ecit.edu.zpxtbehind.user.bean.User"
-            resultType="com.ecit.edu.zpxtbehind.user.bean.User">
-        select * from Resume where pk_user= #{pk_user,jdbcType=VARCHAR}
-    </select>
-    <select id="selectUserByExample" parameterType="com.ecit.edu.zpxtbehind.user.bean.User" resultMap="BaseResultMap">
-        select * from user where pk_user= #{pk_user,jdbcType=VARCHAR}
-        <if test="userName!=null">and userName like #{userName,jdbcType=VARCHAR}</if>
-        <if test="userType!=null">and userType= #{userType,jdbcType=VARCHAR}</if>
 
+    </resultMap>
+<insert id="insertResume" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
+    insert into resume (pk_user,name,sex,age,email,introduction,city,phone,school1,school2,school3,schoolType1,schoolType2,schoolType3,start1,start2,start3,end1,end2,end3,picture,IDCard)
+    values (
+    #{pk_user,jdbcType=INTEGER},
+    #{name,jdbcType=VARCHAR},
+    #{sex,jdbcType=VARCHAR},
+    #{age,jdbcType=INTEGER},
+    #{email,jdbcType=VARCHAR},
+    #{introduction,jdbcType=VARCHAR},
+    #{city,jdbcType=VARCHAR},
+    #{phone,jdbcType=VARCHAR},
+    #{school1,jdbcType=VARCHAR},
+    #{school2,jdbcType=VARCHAR},
+    #{school3,jdbcType=VARCHAR},
+    #{schoolType1,jdbcType=VARCHAR},
+    #{schoolType2,jdbcType=VARCHAR},
+    #{schoolType3,jdbcType=VARCHAR},
+    #{start1,jdbcType=TIMESTAMP},
+    #{start2,jdbcType=TIMESTAMP},
+    #{start3,jdbcType=TIMESTAMP},
+    #{end1,jdbcType=TIMESTAMP},
+    #{end2,jdbcType=TIMESTAMP},
+    #{end3,jdbcType=TIMESTAMP},
+    #{picture,jdbcType=BLOB},
+    #{IDCard,jdbcType=VARCHAR}
+    )
+</insert>
+    <update id="updateResume" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
+        update resume
+        set
+        pk_resume =  #{pk_resume,jdbcType=INTEGER}
+        <if test="pk_user!=null">,pk_user = #{pk_user,jdbcType=INTEGER}</if>
+        <if test="name!=null">,name = #{name,jdbcType=VARCHAR}</if>
+        <if test="sex!=null">,sex = #{sex,jdbcType=VARCHAR}</if>
+        <if test="age!=null">,age = #{age,jdbcType=INTEGER}</if>
+        <if test="email!=null">,email = #{email,jdbcType=VARCHAR}</if>
+        <if test="introduction!=null">,introduction = #{introduction,jdbcType=VARCHAR}</if>
+        <if test="city!=null">,city = #{city,jdbcType=VARCHAR}</if>
+        <if test="job!=null">,job = #{job,jdbcType=VARCHAR}</if>
+        <if test="phone!=null">,phone = #{phone,jdbcType=VARCHAR}</if>
+        <if test="school1!=null">,school1 = #{school1,jdbcType=VARCHAR}</if>
+        <if test="school2!=null">,school2 = #{school2,jdbcType=VARCHAR}</if>
+        <if test="school3!=null">,school3 = #{school3,jdbcType=VARCHAR}</if>
+        <if test="schoolType1!=null">,schoolType1 = #{schoolType1,jdbcType=VARCHAR}</if>
+        <if test="schoolType2!=null">,schoolType2 = #{schoolType2,jdbcType=VARCHAR}</if>
+        <if test="schoolType3!=null">,schoolType3 = #{schoolType3,jdbcType=VARCHAR}</if>
+        <if test="start1!=null">,start1 = #{start1,jdbcType=TIMESTAMP}</if>
+        <if test="start2!=null">,start2 = #{start2,jdbcType=TIMESTAMP}</if>
+        <if test="start3!=null">,start3 = #{start3,jdbcType=TIMESTAMP}</if>
+        <if test="end1!=null">,end1 = #{end1,jdbcType=TIMESTAMP}</if>
+        <if test="end2!=null">,end2 = #{end2,jdbcType=TIMESTAMP}</if>
+        <if test="end3!=null">,end3 = #{end3,jdbcType=TIMESTAMP}</if>
+        <if test="picture!=null">,pk_user = #{pk_user,jdbcType=BLOB}</if>
+        <if test="IDCard!=null">,pk_user = #{pk_user,jdbcType=VARCHAR}</if>
+        where pk_resume =  #{pk_resume,jdbcType=INTEGER}
+    </update>
+    <select id="getResumeByPk_user" parameterType="int" resultType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
+        select*from resume where pk_user = #{pk_user}
     </select>
-    <insert id="insertUser" keyProperty="pk_user" useGeneratedKeys="true" parameterType="com.ecit.edu.zpxtbehind.user.bean.User" >
-        insert into user (userName,userType,password,name,introduction,IDCard,phone,school) values
-        (
-        #{userName,jdbcType=VARCHAR},
-        #{userType,jdbcType=VARCHAR},
-        #{password,jdbcType=VARCHAR},
-        #{name,jdbcType=VARCHAR},
-        #{introduction,jdbcType=VARCHAR},
-        #{IDCard,jdbcType=VARCHAR},
-        #{phone,jdbcType=VARCHAR},
-        #{school,jdbcType=VARCHAR}
-        )
-    </insert>
-    <update id="updateUserPassword" parameterType="com.ecit.edu.zpxtbehind.user.bean.User">
-        update user set password=#{password,jdbcType=VARCHAR} where userName= #{userName,jdbcType=VARCHAR}
-    </update>
-    <update id="updateUserByPk_user" parameterType="com.ecit.edu.zpxtbehind.user.bean.User">
-        update user set
-       userName= #{userName,jdbcType=VARCHAR},
-       userType= #{userType,jdbcType=VARCHAR},
-       password= #{password,jdbcType=VARCHAR},
-        name=#{name,jdbcType=VARCHAR},
-       introduction= #{introduction,jdbcType=VARCHAR},
-        IDCard=#{IDCard,jdbcType=VARCHAR},
-        phone=#{phone,jdbcType=VARCHAR},
-        school=#{school,jdbcType=VARCHAR},
-        password=#{password,jdbcType=VARCHAR}
-        where pk_user = #{pk_user,jdbcType=INTEGER}
-    </update>
 </mapper>

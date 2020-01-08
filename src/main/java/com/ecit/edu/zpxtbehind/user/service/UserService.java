@@ -40,6 +40,8 @@ public class UserService {
     public User selectUserByName(User user) {
         return userMapper.selectUserByName(user);
     }
-
+    public Boolean checkName(String name){
+        return userMapper.checkName(name) != null;
+    }
 
 }

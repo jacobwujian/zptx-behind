@@ -6,6 +6,7 @@ import com.ecit.edu.zpxtbehind.user.bean.User;
 import com.ecit.edu.zpxtbehind.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -19,6 +20,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RestTemplate restTemplate;
     // 获取所有用户信息
     @ResponseBody
     @RequestMapping("getAllUsers")
@@ -63,6 +66,7 @@ public class UserController {
         user.setAvatar(avatar);
         userService.insertUser(user);
         user.setPassword((String) jsonParam.get("password"));
+        restTemplate.postForObject("http://127.0.0.1:8123/behind/api/resume/insertResume",user,JSONObject.class);
         JSONObject result = new JSONObject();
         result.put("user", user);
         result.put("code", 20000);
@@ -235,6 +239,17 @@ public class UserController {
         JSONObject result = new JSONObject();
         result.put("code", 20000);
 
+        return result.toJSONString();
+    }
+
+    // 姓名查重
+    @ResponseBody
+    @RequestMapping(value = "checkName", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public String checkName(@RequestBody JSONObject jsonParam) {
+        String name = (String) jsonParam.get("name");
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("data", userService.checkName(name));
         return result.toJSONString();
     }
 }
