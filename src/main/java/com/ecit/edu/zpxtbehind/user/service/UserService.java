@@ -41,7 +41,7 @@ public class UserService {
         return userMapper.selectUserByName(user);
     }
     public Boolean checkName(String name){
-        return userMapper.checkName(name) != null;
+        return userMapper.checkName(name) == null;
     }
 
 }

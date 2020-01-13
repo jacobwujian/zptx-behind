@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/resume")
@@ -85,7 +86,54 @@ public class ResumeController {
             String introduction = (String) jsonParam.get("introduction");
             resume.setIntroduction(introduction);
         }
-
+        if (jsonParam.get("school1") != null) {
+            String school1 = (String) jsonParam.get("school1");
+            resume.setSchool1(school1);
+        }
+        if (jsonParam.get("school2") != null) {
+            String school2 = (String) jsonParam.get("school2");
+            resume.setSchool2(school2);
+        }
+        if (jsonParam.get("school3") != null) {
+            String school3 = (String) jsonParam.get("school3");
+            resume.setSchool3(school3);
+        }
+        if (jsonParam.get("schoolType1") != null) {
+            String schoolType1 = (String) jsonParam.get("schoolType1");
+            resume.setSchoolType1(schoolType1);
+        }
+        if (jsonParam.get("schoolType2") != null) {
+            String schoolType2 = (String) jsonParam.get("schoolType2");
+            resume.setSchoolType2(schoolType2);
+        }
+        if (jsonParam.get("schoolType3") != null) {
+            String schoolType3 = (String) jsonParam.get("schoolType3");
+            resume.setSchoolType3(schoolType3);
+        }
+        if (jsonParam.get("start1") != null) {
+            Date start1 = new Date((long)jsonParam.get("start1"));
+            resume.setStart1(start1);
+        }
+        if (jsonParam.get("start2") != null) {
+            Date start2 = new Date((long)jsonParam.get("start2"));
+            resume.setStart2(start2);
+        }
+        if (jsonParam.get("start3") != null) {
+            Date start3 = new Date((long)jsonParam.get("start3"));
+            resume.setStart3(start3);
+        }
+        if (jsonParam.get("end1") != null) {
+            Date end1 = new Date((long)jsonParam.get("end1"));
+            resume.setEnd1(end1);
+        }
+        if (jsonParam.get("end2") != null) {
+            Date end2 = new Date((long)jsonParam.get("end2"));
+            resume.setEnd2(end2);
+        }
+        if (jsonParam.get("end3") != null) {
+            Date end3 = new Date((long)jsonParam.get("end3"));
+            resume.setEnd3(end3);
+        }
         resumeService.updateResume(resume);
         JSONObject result = new JSONObject();
         result.put("code", 20000);

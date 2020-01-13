@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecit.edu.zpxtbehind.act.mapper.ActMapper">
+    <resultMap id="BaseResultMap" type="com.ecit.edu.zpxtbehind.user.bean.User">
+        <id column="pk_act" jdbcType="INTEGER" property="pk_user"/>
+        <result column="act_name" jdbcType="VARCHAR" property="act_name"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="job" jdbcType="VARCHAR" property="job"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+        <result column="jobNumber" jdbcType="INTEGER" property="jobNumber"/>
+        <result column="company" jdbcType="VARCHAR" property="company"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="startTime" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+    </resultMap>
+
+</mapper>
