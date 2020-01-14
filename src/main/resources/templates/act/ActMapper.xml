@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecit.edu.zpxtbehind.act.mapper.ActMapper">
+    <resultMap id="ActMap" type="com.ecit.edu.zpxtbehind.act.bean.Act">
+        <id column="pk_act" jdbcType="INTEGER" property="pk_act"/>
+        <result column="act_name" jdbcType="VARCHAR" property="act_name"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="job" jdbcType="VARCHAR" property="job"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+        <result column="jobNumber" jdbcType="INTEGER" property="jobNumber"/>
+        <result column="company" jdbcType="VARCHAR" property="company"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="startTime" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+    </resultMap>
+    <resultMap id="ActScreenMap" type="com.ecit.edu.zpxtbehind.act.bean.ActScreen">
+        <id column="pk_screen" jdbcType="INTEGER" property="pk_screen"/>
+        <result column="pk_act" jdbcType="INTEGER" property="pk_act"/>
+        <result column="filedName" jdbcType="VARCHAR" property="filedName"/>
+        <result column="screenCoin" jdbcType="VARCHAR" property="screenCoin"/>
+        <result column="screenValue" jdbcType="VARCHAR" property="screenValue"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+    </resultMap>
+    <select id="selectAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultType="com.ecit.edu.zpxtbehind.act.bean.Act">
+        select *from act_main where pk_act = #{pk_act, jdbcType=INTEGER}
+    </select>
+    <select id="selectActs" resultMap="ActMap">
+       select * from act_main
+    </select>
+    <select id="selectActScreens" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultMap="ActMap">
+        select * from act_screen where pk_act = #{pk_act, jdbcType=INTEGER}
+    </select>
+    <insert id="insertAct" keyProperty="pk_act" useGeneratedKeys="true" parameterType="com.ecit.edu.zpxtbehind.act.bean.ActScreen" >
+      insert into act_main (act_name, creator, job, jobNumber, company, introduction, startTime, endTime, state) values
+        (
+        #{act_name, jdbcType=VARCHAR},
+        #{creator, jdbcType=VARCHAR},
+        #{job, jdbcType=VARCHAR},
+        #{jobNumber, jdbcType=INTEGER},
+        #{company, jdbcType=VARCHAR},
+        #{introduction, jdbcType=VARCHAR},
+        #{startTime, jdbcType=TIMESTAMP},
+        #{endTime, jdbcType=TIMESTAMP},
+        #{state, jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertActScreens" parameterType="java.util.List">
+        insert into act_screen (pk_act,filedName,screenCoin,screenValue) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.pk_act,jdbcType=INTEGER},#{item.filedName,jdbcType=VARCHAR},#{item.screenCoin,jdbcType=VARCHAR},#{item.screenValue,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+    <update id="updateAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
+        update act_main set
+        act_name = #{act_name, jdbcType=VARCHAR},
+        creator = #{creator, jdbcType=VARCHAR},
+        job = #{job, jdbcType=VARCHAR},
+        jobNumber = #{jobNumber, jdbcType=INTEGER},
+        company = #{company, jdbcType=VARCHAR},
+        introduction = #{introduction, jdbcType=VARCHAR},
+        startTime = #{startTime, jdbcType=VARCHAR},
+        endTime = #{endTime, jdbcType=VARCHAR},
+        state = #{state, jdbcType=INTEGER}
+        where pk_act = #{pk_act, jdbcType=INTEGER}
+    </update>
+   <delete id="deleteScreens" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
+       delete from act_screen where pk_act  = #{pk_act, jdbcType=INTEGER}
+   </delete>
+    <delete id="deleteAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
+       delete from act_main where pk_act  = #{pk_act, jdbcType=INTEGER}
+   </delete>
+</mapper>
