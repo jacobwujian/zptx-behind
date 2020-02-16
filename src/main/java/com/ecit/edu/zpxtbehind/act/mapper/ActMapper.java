@@ -7,11 +7,12 @@ import java.util.List;
 
 public interface ActMapper {
     Act selectAct(Act act);
-    List<Act> selectActs();
+    List<Act> selectActs(Integer pk_user);
     List<ActScreen> selectActScreens(Act act);
     void insertAct(Act act);
     void insertActScreens(List<ActScreen> actScreens);
     void updateAct(Act act);
     void deleteScreens(Act act);
     void deleteAct(Act act);
+    List<Act> selectActsByExample(Act act);
 }

@@ -15,8 +15,8 @@ public class ActService {
    public Act selectAct(Act act){
        return actMapper.selectAct(act);
    }
-   public List<Act> selectActs(){
-       return actMapper.selectActs();
+   public List<Act> selectActs(Integer pk_user){
+       return actMapper.selectActs(pk_user);
    }
    public List<ActScreen> selectActScreens(Act act){
        return actMapper.selectActScreens(act);
@@ -36,4 +36,7 @@ public class ActService {
    public void deleteAct(Act act){
        actMapper.deleteAct(act);
    }
+    public List<Act> selectActsByExample(Act act){
+        return actMapper.selectActsByExample(act);
+    }
 }

@@ -14,6 +14,15 @@ public class Act {
     private Date endTime;
     private Date ts;
     private Integer state;
+    private Integer pk_user;
+
+    public Integer getPk_user() {
+        return pk_user;
+    }
+
+    public void setPk_user(Integer pk_user) {
+        this.pk_user = pk_user;
+    }
 
     public Integer getPk_act() {
         return pk_act;

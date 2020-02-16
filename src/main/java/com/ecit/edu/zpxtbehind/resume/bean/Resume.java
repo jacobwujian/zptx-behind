@@ -27,8 +27,18 @@ public class Resume {
     private Date ts;
     private Date modifiedtime;
     private String introduction;
-    private Byte[] picture;
+    private byte[] picture;
     private String IDCard;
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    private String education;
 
     public String getIDCard() {
         return IDCard;
@@ -231,11 +241,11 @@ public class Resume {
         this.introduction = introduction;
     }
 
-    public Byte[] getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(Byte[] picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 }

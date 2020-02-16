@@ -14,6 +14,8 @@
         <result column="startTime" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
         <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="pk_user" jdbcType="INTEGER" property="pk_user"/>
+
     </resultMap>
     <resultMap id="ActScreenMap" type="com.ecit.edu.zpxtbehind.act.bean.ActScreen">
         <id column="pk_screen" jdbcType="INTEGER" property="pk_screen"/>
@@ -26,8 +28,12 @@
     <select id="selectAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultType="com.ecit.edu.zpxtbehind.act.bean.Act">
         select *from act_main where pk_act = #{pk_act, jdbcType=INTEGER}
     </select>
-    <select id="selectActs" resultMap="ActMap">
-       select * from act_main
+    <select id="selectActs" parameterType="java.lang.Integer" resultMap="ActMap">
+       select * from act_main where pk_user = #{pk_user, jdbcType=INTEGER}
+    </select>
+    <select id="selectActsByExample" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultMap="ActMap">
+       select * from act_main where 1=1 <if test="state != null">and state = #{state, jdbcType = INTEGER} </if>
+       <if test="act_name != null">and act_name like #{act_name}</if>
     </select>
     <select id="selectActScreens" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultMap="ActMap">
         select * from act_screen where pk_act = #{pk_act, jdbcType=INTEGER}
@@ -43,7 +49,8 @@
         #{introduction, jdbcType=VARCHAR},
         #{startTime, jdbcType=TIMESTAMP},
         #{endTime, jdbcType=TIMESTAMP},
-        #{state, jdbcType=INTEGER}
+        #{state, jdbcType=INTEGER},
+        #{pk_user, jdbcType=INTEGER}
         )
     </insert>
     <insert id="insertActScreens" parameterType="java.util.List">

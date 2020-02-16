@@ -1,6 +1,7 @@
 package com.ecit.edu.zpxtbehind.act.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ecit.edu.zpxtbehind.HeaderParamUtil;
 import com.ecit.edu.zpxtbehind.act.bean.Act;
 import com.ecit.edu.zpxtbehind.act.bean.ActScreen;
 import com.ecit.edu.zpxtbehind.act.service.ActService;
@@ -10,12 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/act")
 public class ActController {
+
+    @Autowired
+    HttpServletRequest request;
+
+    private Integer getPk_user() {
+        return HeaderParamUtil.getPKUser(request);
+    }
     @Autowired
     ActService actService;
 
@@ -40,7 +49,29 @@ public class ActController {
     @ResponseBody
     @RequestMapping("getAllActs")
     public String getAllActs() {
-        List<Act> acts = actService.selectActs();
+        Integer pk_user = getPk_user();
+        List<Act> acts = actService.selectActs(pk_user);
+        JSONObject result = new JSONObject();
+        result.put("acts", acts);
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+
+    // 获取所有活动的部分信息
+    @ResponseBody
+    @RequestMapping("searchByExample")
+    public String searchByExample(@RequestBody JSONObject jsonParam) {
+        Act act = new Act();
+        if (jsonParam.get("searchName")!=null) {
+            String searchName = "%"+ jsonParam.get("searchName") + "%";
+            act.setAct_name(searchName);
+        }
+        if (jsonParam.get("chooseState")!=null) {
+            Integer state = (Integer) jsonParam.get("chooseState");
+            act.setState(state);
+        }
+        List<Act> acts = actService.selectActsByExample(act);
         JSONObject result = new JSONObject();
         result.put("acts", acts);
         result.put("code", 20000);
@@ -108,7 +139,8 @@ public class ActController {
 
     private Act getActWithRequest(JSONObject jsonParam){
         Act act = new Act();
-
+        Integer pk_user = getPk_user();
+        act.setPk_user(pk_user);
         if (jsonParam.get("pk_act") != null) {
             act.setPk_act((Integer) jsonParam.get("pk_act"));
         }
@@ -131,10 +163,10 @@ public class ActController {
             act.setIntroduction((String) jsonParam.get("introduction"));
         }
         if (jsonParam.get("startTime") != null) {
-            act.setStartTime((Date) jsonParam.get("startTime"));
+            act.setStartTime(new Date((long) jsonParam.get("startTime")));
         }
         if (jsonParam.get("endTime") != null) {
-            act.setEndTime((Date) jsonParam.get("endTime"));
+            act.setEndTime(new Date((long) jsonParam.get("endTime")));
         }
         if (jsonParam.get("state") != null) {
             act.setState((Integer) jsonParam.get("state"));

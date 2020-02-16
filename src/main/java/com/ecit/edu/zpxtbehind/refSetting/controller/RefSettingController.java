@@ -156,7 +156,7 @@ public class RefSettingController {
         if (jsonParam.get("name")==null||jsonParam.get("name").equals("")){
             name = null;
         }else {
-            name = (String) jsonParam.get("name");
+            name = "%"+ jsonParam.get("name")+"%";
         }
         ArrayList arrayList;
         if (jsonParam.get("children")!=null){
