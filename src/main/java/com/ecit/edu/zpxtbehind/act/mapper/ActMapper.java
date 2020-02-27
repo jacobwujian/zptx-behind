@@ -15,4 +15,5 @@ public interface ActMapper {
     void deleteScreens(Act act);
     void deleteAct(Act act);
     List<Act> selectActsByExample(Act act);
+    List<Act> selectAllActs();
 }

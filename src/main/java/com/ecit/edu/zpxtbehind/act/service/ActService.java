@@ -21,6 +21,9 @@ public class ActService {
    public List<ActScreen> selectActScreens(Act act){
        return actMapper.selectActScreens(act);
    }
+   public List<Act> selectAllActs(){
+       return actMapper.selectAllActs();
+   }
    public void insertAct(Act act){
        actMapper.insertAct(act);
    }

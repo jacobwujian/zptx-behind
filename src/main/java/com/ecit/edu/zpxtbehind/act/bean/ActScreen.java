@@ -7,7 +7,25 @@ public class ActScreen {
     private Integer pk_act;
     private String filedName;
     private String screenCoin;
-    private String screenValue;
+    private String screenValue1;
+    private String screenValue2;
+
+    public String getScreenValue1() {
+        return screenValue1;
+    }
+
+    public void setScreenValue1(String screenValue1) {
+        this.screenValue1 = screenValue1;
+    }
+
+    public String getScreenValue2() {
+        return screenValue2;
+    }
+
+    public void setScreenValue2(String screenValue2) {
+        this.screenValue2 = screenValue2;
+    }
+
     private Date ts;
 
     public Integer getPk_screen() {
@@ -40,14 +58,6 @@ public class ActScreen {
 
     public void setScreenCoin(String screenCoin) {
         this.screenCoin = screenCoin;
-    }
-
-    public String getScreenValue() {
-        return screenValue;
-    }
-
-    public void setScreenValue(String screenValue) {
-        this.screenValue = screenValue;
     }
 
     public Date getTs() {

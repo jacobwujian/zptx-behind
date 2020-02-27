@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/act")
@@ -45,7 +47,7 @@ public class ActController {
         return result.toJSONString();
     }
 
-    // 获取所有活动的部分信息
+    // 获取某个用户的所有活动的部分信息
     @ResponseBody
     @RequestMapping("getAllActs")
     public String getAllActs() {
@@ -60,9 +62,23 @@ public class ActController {
 
     // 获取所有活动的部分信息
     @ResponseBody
+    @RequestMapping("getActsForUser")
+    public String getActsForUser() {
+        List<Act> acts = actService.selectAllActs();
+        JSONObject result = new JSONObject();
+        result.put("acts", acts);
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+
+    // 获取所有活动的部分信息
+    @ResponseBody
     @RequestMapping("searchByExample")
     public String searchByExample(@RequestBody JSONObject jsonParam) {
+        Integer pk_user = getPk_user();
         Act act = new Act();
+        act.setPk_user(pk_user);
         if (jsonParam.get("searchName")!=null) {
             String searchName = "%"+ jsonParam.get("searchName") + "%";
             act.setAct_name(searchName);
@@ -83,6 +99,8 @@ public class ActController {
     @ResponseBody
     @RequestMapping("insertAct")
     public String insertAct(@RequestBody JSONObject jsonParam) {
+        List<ActScreen> actScreens = (List<ActScreen>) jsonParam.get("re2");
+        actService.insertActScreens(actScreens);
         Act act = getActWithRequest(jsonParam);
         actService.insertAct(act);
         JSONObject result = new JSONObject();
@@ -102,18 +120,21 @@ public class ActController {
         result.put("message", "success");
         return result.toJSONString();
     }
-    // 插入活动筛选条件
+    // 更新活动筛选条件
     @ResponseBody
     @RequestMapping("updateAct")
     public String updateAct(@RequestBody JSONObject jsonParam) {
+        List<ActScreen> actScreens = (List<ActScreen>) jsonParam.get("re2");
         Act act = getActWithRequest(jsonParam);
+        actService.deleteScreens(act);
+        actService.insertActScreens(actScreens);
         actService.updateAct(act);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
         return result.toJSONString();
     }
-    // 插入活动筛选条件
+    // 删除活动筛选条件
     @ResponseBody
     @RequestMapping("deleteScreens")
     public String deleteScreens(@RequestBody JSONObject jsonParam) {
@@ -124,7 +145,7 @@ public class ActController {
         result.put("message", "success");
         return result.toJSONString();
     }
-    // 插入活动筛选条件
+    // 删除活动
     @ResponseBody
     @RequestMapping("deleteAct")
     public String deleteAct(@RequestBody JSONObject jsonParam) {
@@ -137,7 +158,8 @@ public class ActController {
         return result.toJSONString();
     }
 
-    private Act getActWithRequest(JSONObject jsonParam){
+    private Act getActWithRequest(JSONObject js){
+        Map jsonParam = (Map) js.get("re1");
         Act act = new Act();
         Integer pk_user = getPk_user();
         act.setPk_user(pk_user);

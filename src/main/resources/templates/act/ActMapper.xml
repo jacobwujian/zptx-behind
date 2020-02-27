@@ -22,7 +22,8 @@
         <result column="pk_act" jdbcType="INTEGER" property="pk_act"/>
         <result column="filedName" jdbcType="VARCHAR" property="filedName"/>
         <result column="screenCoin" jdbcType="VARCHAR" property="screenCoin"/>
-        <result column="screenValue" jdbcType="VARCHAR" property="screenValue"/>
+        <result column="screenValue1" jdbcType="VARCHAR" property="screenValue1"/>
+        <result column="screenValue2" jdbcType="VARCHAR" property="screenValue2"/>
         <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
     </resultMap>
     <select id="selectAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultType="com.ecit.edu.zpxtbehind.act.bean.Act">
@@ -31,15 +32,18 @@
     <select id="selectActs" parameterType="java.lang.Integer" resultMap="ActMap">
        select * from act_main where pk_user = #{pk_user, jdbcType=INTEGER}
     </select>
+    <select id="selectAllActs" resultMap="ActMap">
+       select * from act_main where state = 2
+    </select>
     <select id="selectActsByExample" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultMap="ActMap">
-       select * from act_main where 1=1 <if test="state != null">and state = #{state, jdbcType = INTEGER} </if>
+       select * from act_main where pk_user = #{pk_user, jdbcType=INTEGER} <if test="state != null">and state = #{state, jdbcType = INTEGER} </if>
        <if test="act_name != null">and act_name like #{act_name}</if>
     </select>
     <select id="selectActScreens" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultMap="ActMap">
         select * from act_screen where pk_act = #{pk_act, jdbcType=INTEGER}
     </select>
     <insert id="insertAct" keyProperty="pk_act" useGeneratedKeys="true" parameterType="com.ecit.edu.zpxtbehind.act.bean.ActScreen" >
-      insert into act_main (act_name, creator, job, jobNumber, company, introduction, startTime, endTime, state) values
+      insert into act_main (act_name, creator, job, jobNumber, company, introduction, startTime, endTime, state, pk_user) values
         (
         #{act_name, jdbcType=VARCHAR},
         #{creator, jdbcType=VARCHAR},
@@ -54,9 +58,9 @@
         )
     </insert>
     <insert id="insertActScreens" parameterType="java.util.List">
-        insert into act_screen (pk_act,filedName,screenCoin,screenValue) values
+        insert into act_screen (pk_act,filedName,screenCoin,screenValue1,screenValue2) values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.pk_act,jdbcType=INTEGER},#{item.filedName,jdbcType=VARCHAR},#{item.screenCoin,jdbcType=VARCHAR},#{item.screenValue,jdbcType=VARCHAR})
+            (#{item.pk_act,jdbcType=INTEGER},#{item.filedName,jdbcType=VARCHAR},#{item.screenCoin,jdbcType=VARCHAR},#{item.screenValue1,jdbcType=VARCHAR},#{item.screenValue2,jdbcType=VARCHAR})
         </foreach>
     </insert>
     <update id="updateAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
