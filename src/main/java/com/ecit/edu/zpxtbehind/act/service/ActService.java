@@ -1,7 +1,6 @@
 package com.ecit.edu.zpxtbehind.act.service;
 
 import com.ecit.edu.zpxtbehind.act.bean.Act;
-import com.ecit.edu.zpxtbehind.act.bean.ActScreen;
 import com.ecit.edu.zpxtbehind.act.mapper.ActMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,23 +17,14 @@ public class ActService {
    public List<Act> selectActs(Integer pk_user){
        return actMapper.selectActs(pk_user);
    }
-   public List<ActScreen> selectActScreens(Act act){
-       return actMapper.selectActScreens(act);
-   }
    public List<Act> selectAllActs(){
        return actMapper.selectAllActs();
    }
    public void insertAct(Act act){
        actMapper.insertAct(act);
    }
-   public void insertActScreens(List<ActScreen> actScreens){
-       actMapper.insertActScreens(actScreens);
-   }
    public void updateAct(Act act){
        actMapper.updateAct(act);
-   }
-   public void deleteScreens(Act act){
-       actMapper.deleteScreens(act);
    }
    public void deleteAct(Act act){
        actMapper.deleteAct(act);

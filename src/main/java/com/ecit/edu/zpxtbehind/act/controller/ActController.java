@@ -3,7 +3,6 @@ package com.ecit.edu.zpxtbehind.act.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ecit.edu.zpxtbehind.HeaderParamUtil;
 import com.ecit.edu.zpxtbehind.act.bean.Act;
-import com.ecit.edu.zpxtbehind.act.bean.ActScreen;
 import com.ecit.edu.zpxtbehind.act.service.ActService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +35,9 @@ public class ActController {
         Integer pk_act = (Integer) jsonParam.get("pk_act");
         Act act = new Act();
         act.setPk_act(pk_act);
-        List<ActScreen> actScreens = actService.selectActScreens(act);
         act = actService.selectAct(act);
         JSONObject result = new JSONObject();
         result.put("act", act);
-        result.put("actScreens", actScreens);
         result.put("code", 20000);
         result.put("message", "success");
         return result.toJSONString();
@@ -99,8 +95,6 @@ public class ActController {
     @ResponseBody
     @RequestMapping("insertAct")
     public String insertAct(@RequestBody JSONObject jsonParam) {
-        List<ActScreen> actScreens = (List<ActScreen>) jsonParam.get("re2");
-        actService.insertActScreens(actScreens);
         Act act = getActWithRequest(jsonParam);
         actService.insertAct(act);
         JSONObject result = new JSONObject();
@@ -109,25 +103,11 @@ public class ActController {
         result.put("message", "success");
         return result.toJSONString();
     }
-    // 插入活动筛选条件
-    @ResponseBody
-    @RequestMapping("insertActScreens")
-    public String insertActScreens(@RequestBody JSONObject jsonParam) {
-        List<ActScreen> actScreens = (List<ActScreen>) jsonParam.get("actScreens");
-        actService.insertActScreens(actScreens);
-        JSONObject result = new JSONObject();
-        result.put("code", 20000);
-        result.put("message", "success");
-        return result.toJSONString();
-    }
     // 更新活动筛选条件
     @ResponseBody
     @RequestMapping("updateAct")
     public String updateAct(@RequestBody JSONObject jsonParam) {
-        List<ActScreen> actScreens = (List<ActScreen>) jsonParam.get("re2");
         Act act = getActWithRequest(jsonParam);
-        actService.deleteScreens(act);
-        actService.insertActScreens(actScreens);
         actService.updateAct(act);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
@@ -139,7 +119,6 @@ public class ActController {
     @RequestMapping("deleteScreens")
     public String deleteScreens(@RequestBody JSONObject jsonParam) {
         Act act = getActWithRequest(jsonParam);
-        actService.deleteScreens(act);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
@@ -151,15 +130,13 @@ public class ActController {
     public String deleteAct(@RequestBody JSONObject jsonParam) {
         Act act = getActWithRequest(jsonParam);
         actService.deleteAct(act);
-        actService.deleteScreens(act);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
         return result.toJSONString();
     }
 
-    private Act getActWithRequest(JSONObject js){
-        Map jsonParam = (Map) js.get("re1");
+    private Act getActWithRequest(JSONObject jsonParam){
         Act act = new Act();
         Integer pk_user = getPk_user();
         act.setPk_user(pk_user);
@@ -192,6 +169,12 @@ public class ActController {
         }
         if (jsonParam.get("state") != null) {
             act.setState((Integer) jsonParam.get("state"));
+        }
+        if (jsonParam.get("address") != null) {
+            act.setAddress((String) jsonParam.get("address"));
+        }
+        if (jsonParam.get("salary") != null) {
+            act.setSalary((String) jsonParam.get("salary"));
         }
         return act;
     }

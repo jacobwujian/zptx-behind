@@ -15,16 +15,8 @@
         <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
         <result column="state" jdbcType="INTEGER" property="state"/>
         <result column="pk_user" jdbcType="INTEGER" property="pk_user"/>
-
-    </resultMap>
-    <resultMap id="ActScreenMap" type="com.ecit.edu.zpxtbehind.act.bean.ActScreen">
-        <id column="pk_screen" jdbcType="INTEGER" property="pk_screen"/>
-        <result column="pk_act" jdbcType="INTEGER" property="pk_act"/>
-        <result column="filedName" jdbcType="VARCHAR" property="filedName"/>
-        <result column="screenCoin" jdbcType="VARCHAR" property="screenCoin"/>
-        <result column="screenValue1" jdbcType="VARCHAR" property="screenValue1"/>
-        <result column="screenValue2" jdbcType="VARCHAR" property="screenValue2"/>
-        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="salary" jdbcType="VARCHAR" property="salary"/>
     </resultMap>
     <select id="selectAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultType="com.ecit.edu.zpxtbehind.act.bean.Act">
         select *from act_main where pk_act = #{pk_act, jdbcType=INTEGER}
@@ -39,11 +31,8 @@
        select * from act_main where pk_user = #{pk_user, jdbcType=INTEGER} <if test="state != null">and state = #{state, jdbcType = INTEGER} </if>
        <if test="act_name != null">and act_name like #{act_name}</if>
     </select>
-    <select id="selectActScreens" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultMap="ActMap">
-        select * from act_screen where pk_act = #{pk_act, jdbcType=INTEGER}
-    </select>
-    <insert id="insertAct" keyProperty="pk_act" useGeneratedKeys="true" parameterType="com.ecit.edu.zpxtbehind.act.bean.ActScreen" >
-      insert into act_main (act_name, creator, job, jobNumber, company, introduction, startTime, endTime, state, pk_user) values
+    <insert id="insertAct" keyProperty="pk_act" useGeneratedKeys="true" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" >
+      insert into act_main (act_name, creator, job, jobNumber, company, introduction, startTime, endTime, state, pk_user, address, salary) values
         (
         #{act_name, jdbcType=VARCHAR},
         #{creator, jdbcType=VARCHAR},
@@ -54,14 +43,10 @@
         #{startTime, jdbcType=TIMESTAMP},
         #{endTime, jdbcType=TIMESTAMP},
         #{state, jdbcType=INTEGER},
-        #{pk_user, jdbcType=INTEGER}
+        #{pk_user, jdbcType=INTEGER},
+        #{address, jdbcType=VARCHAR},
+        #{salary, jdbcType=VARCHAR}
         )
-    </insert>
-    <insert id="insertActScreens" parameterType="java.util.List">
-        insert into act_screen (pk_act,filedName,screenCoin,screenValue1,screenValue2) values
-        <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.pk_act,jdbcType=INTEGER},#{item.filedName,jdbcType=VARCHAR},#{item.screenCoin,jdbcType=VARCHAR},#{item.screenValue1,jdbcType=VARCHAR},#{item.screenValue2,jdbcType=VARCHAR})
-        </foreach>
     </insert>
     <update id="updateAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
         update act_main set
@@ -73,12 +58,11 @@
         introduction = #{introduction, jdbcType=VARCHAR},
         startTime = #{startTime, jdbcType=VARCHAR},
         endTime = #{endTime, jdbcType=VARCHAR},
-        state = #{state, jdbcType=INTEGER}
+        state = #{state, jdbcType=INTEGER},
+        address = #{address, jdbcType=VARCHAR,},
+        salary = #{salary, jdbcType=VARCHAR}
         where pk_act = #{pk_act, jdbcType=INTEGER}
     </update>
-   <delete id="deleteScreens" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
-       delete from act_screen where pk_act  = #{pk_act, jdbcType=INTEGER}
-   </delete>
     <delete id="deleteAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
        delete from act_main where pk_act  = #{pk_act, jdbcType=INTEGER}
    </delete>
