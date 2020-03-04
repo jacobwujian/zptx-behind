@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecit.edu.zpxtbehind.company.mapper.CompanyMapper">
+    <resultMap id="resultMap" type="com.ecit.edu.zpxtbehind.company.bean.Company">
+        <id column="pk_company" jdbcType="INTEGER" property="pk_company"/>
+        <result column="pk_user" jdbcType="INTEGER" property="pk_user"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+    </resultMap>
+    <select id="selectCompany" parameterType="java.lang.Integer" resultMap="com.ecit.edu.zpxtbehind.company.bean.Company">
+        select * from company where pk_user = #{pk_user, jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertCompany" parameterType="java.lang.Integer" >
+        insert into  company (pk_user) values (#{pk_user, jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteCompany"  parameterType="java.lang.Integer">
+        delete from company where  pk_user = #{pk_user, jdbcType=INTEGER}
+    </delete>
+
+    <update id="updateCompany"  parameterType="com.ecit.edu.zpxtbehind.company.bean.Company">
+        update company set name = #{name, jdbcType=VARCHAR},address = #{address, jdbcType=VARCHAR},introduction = #{introduction, jdbcType=VARCHAR} where pk_user =#{pk_user, jdbcType=INTEGER}
+    </update>
+
+</mapper>
