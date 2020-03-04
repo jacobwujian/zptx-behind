@@ -10,7 +10,7 @@
         <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
         <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
     </resultMap>
-    <select id="selectCompany" parameterType="java.lang.Integer" resultMap="com.ecit.edu.zpxtbehind.company.bean.Company">
+    <select id="selectCompany" parameterType="java.lang.Integer" resultType="com.ecit.edu.zpxtbehind.company.bean.Company">
         select * from company where pk_user = #{pk_user, jdbcType=INTEGER}
     </select>
 
