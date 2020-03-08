@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
@@ -27,6 +28,8 @@ public class ActController {
     @Autowired
     ActService actService;
 
+    @Autowired
+    private RestTemplate restTemplate;
     // 获取活动信息
     @ResponseBody
     @RequestMapping("getActInformation")
@@ -106,6 +109,16 @@ public class ActController {
     @ResponseBody
     @RequestMapping("updateAct")
     public String updateAct(@RequestBody JSONObject jsonParam) {
+        if (jsonParam.get("endTime")!=null) {
+            JSONObject res = new JSONObject();
+            res.put("pk_act", jsonParam.get("pk_act"));
+            if ((Integer) jsonParam.get("state") == 2) {
+                restTemplate.postForObject("http://127.0.0.1:8123/behind/api/result/insertResult", res, JSONObject.class);
+            } else {
+                restTemplate.postForObject("http://127.0.0.1:8123/behind/api/result/deleteResult", res, JSONObject.class);
+
+            }
+        }
         Act act = getActWithRequest(jsonParam);
         actService.updateAct(act);
         JSONObject result = new JSONObject();

@@ -2,7 +2,6 @@ package com.ecit.edu.zpxtbehind.resume.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ecit.edu.zpxtbehind.resume.bean.Resume;
-import com.ecit.edu.zpxtbehind.resume.bean.UserSkill;
 import com.ecit.edu.zpxtbehind.resume.service.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,7 +75,7 @@ public class ResumeController {
             resume.setPhone(phone);
         }
         if (jsonParam.get("city") != null) {
-            String city = ((ArrayList) jsonParam.get("city")).toString();
+            String city = (jsonParam.get("city")).toString();
             resume.setCity(city);
         }
         if (jsonParam.get("job") != null) {
@@ -194,12 +193,12 @@ public class ResumeController {
         return result.toJSONString();
     }
 
-    //获取技能
+    //获取多份简历
     @ResponseBody
-    @RequestMapping("getSkills")
-    public String getSkills(@RequestBody JSONObject jsonParam) throws IOException {
-        String pk_user= (String) jsonParam.get("pk_user");
-        List<UserSkill> list = resumeService.getSkills(Integer.valueOf(pk_user));
+    @RequestMapping("getResumes")
+    public String getResumes(@RequestBody JSONObject jsonParam) throws IOException {
+        String example= (String) jsonParam.get("example");
+        List<Resume> list = resumeService.getResumes(example);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
@@ -207,38 +206,26 @@ public class ResumeController {
         return result.toJSONString();
     }
 
-    //删除技能
+    //获取技能
     @ResponseBody
-    @RequestMapping("deleteSkills")
-    public String deleteSkills(@RequestBody JSONObject jsonParam) throws IOException {
+    @RequestMapping("getSkills")
+    public String getSkills(@RequestBody JSONObject jsonParam) throws IOException {
         String pk_user= (String) jsonParam.get("pk_user");
-        resumeService.deleteSkills(Integer.valueOf(pk_user));
+        String skills = resumeService.getSkills(Integer.valueOf(pk_user));
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
+        result.put("data", skills);
         return result.toJSONString();
     }
 
-    //插入技能
-    @ResponseBody
-    @RequestMapping("insertSkill")
-    public String insertSkill(@RequestBody JSONObject jsonParam) {
-        String pk_user= (String) jsonParam.get("pk_user");
-        resumeService.deleteSkills(Integer.valueOf(pk_user));
-        JSONObject result = new JSONObject();
-        result.put("code", 20000);
-        result.put("message", "success");
-        return result.toJSONString();
-    }
 
     //修改技能
     @ResponseBody
     @RequestMapping("updateSkills")
     public String updateSkills(@RequestBody JSONObject jsonParam) {
-        ArrayList<UserSkill> skills= (ArrayList) jsonParam.get("skills");
-        for (UserSkill userSkill: skills){
-            resumeService.updateSkill(userSkill);
-        }
+        String skills= (String) jsonParam.get("skills");
+        resumeService.updateSkills(skills);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");

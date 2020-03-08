@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecit.edu.zpxtbehind.result.mapper.ResultMapper">
+    <resultMap id="BaseResultMap" type="com.ecit.edu.zpxtbehind.result.bean.Result">
+        <id column="pk_result" javaType="INTEGER" property="pk_result"/>
+        <result column="pk_act" jdbcType="INTEGER" property="pk_act"/>
+        <result column="resultCount" jdbcType="VARCHAR" property="resultCount"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
+    </resultMap>
+    <insert id="insertResult" parameterType="com.ecit.edu.zpxtbehind.result.bean.Result">
+    insert into result (pk_result,pk_act,resultCount)
+    values (
+    #{pk_result,jdbcType=INTEGER},
+    #{pk_act,jdbcType=INTEGER},
+    #{resultCount,jdbcType=VARCHAR}
+    )
+</insert>
+    <update id="updateResult" parameterType="com.ecit.edu.zpxtbehind.result.bean.Result">
+        update result
+        set
+        resultCount =  #{resultCount,jdbcType=VARCHAR}
+        where pk_result =  #{pk_result,jdbcType=INTEGER}
+    </update>
+    <select id="getResult" parameterType="java.lang.Integer" resultType="com.ecit.edu.zpxtbehind.result.bean.Result">
+        select*from result where pk_act = #{pk_act,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteResult" parameterType="java.lang.Integer">
+        delete from result where pk_act = #{pk_act, jdbcType=INTEGER}
+    </delete>
+
+</mapper>

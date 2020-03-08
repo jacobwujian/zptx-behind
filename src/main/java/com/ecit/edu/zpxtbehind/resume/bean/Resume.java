@@ -40,6 +40,15 @@ public class Resume {
 
     private String education;
 
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
+
+    private String skills;
     public String getIDCard() {
         return IDCard;
     }

@@ -1,7 +1,6 @@
 package com.ecit.edu.zpxtbehind.resume.service;
 
 import com.ecit.edu.zpxtbehind.resume.bean.Resume;
-import com.ecit.edu.zpxtbehind.resume.bean.UserSkill;
 import com.ecit.edu.zpxtbehind.resume.mapper.ResumeMapper;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +25,13 @@ public class ResumeService {
    public void deleteResume(int pk_user){
        resumeMapper.deleteResume(pk_user);
    }
-   public List<UserSkill> getSkills(int pk_user){
+   public String getSkills(int pk_user){
         return resumeMapper.getSkills(pk_user);
    }
-   public void insertSkill(UserSkill userSkill){
-       resumeMapper.insertSkill(userSkill);
+   public void updateSkills(String skills){
+       resumeMapper.updateSkills(skills);
    }
-   public void deleteSkills(int pk_user){
-       resumeMapper.deleteSkills(pk_user);
-   }
-   public void updateSkill(UserSkill userSkill){
-       resumeMapper.updateSkill(userSkill);
-   }
+    public List<Resume> getResumes(String example){
+        return resumeMapper.getResumes(example);
+    }
 }
