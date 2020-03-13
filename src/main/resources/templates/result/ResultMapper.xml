@@ -20,9 +20,9 @@
         update result
         set
         resultCount =  #{resultCount,jdbcType=VARCHAR}
-        where pk_result =  #{pk_result,jdbcType=INTEGER}
+        where pk_act =  #{pk_act,jdbcType=INTEGER}
     </update>
-    <select id="getResult" parameterType="java.lang.Integer" resultType="com.ecit.edu.zpxtbehind.result.bean.Result">
+    <select id="selectResult" parameterType="java.lang.Integer" resultType="com.ecit.edu.zpxtbehind.result.bean.Result">
         select*from result where pk_act = #{pk_act,jdbcType=INTEGER}
     </select>
     <delete id="deleteResult" parameterType="java.lang.Integer">

@@ -1,6 +1,7 @@
 package com.ecit.edu.zpxtbehind.resume.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ecit.edu.zpxtbehind.HeaderParamUtil;
 import com.ecit.edu.zpxtbehind.resume.bean.Resume;
 import com.ecit.edu.zpxtbehind.resume.service.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,12 @@ public class ResumeController {
     @Autowired
     ResumeService resumeService;
 
+    @Autowired
+    HttpServletRequest request;
 
+    private Integer getPk_user() {
+        return HeaderParamUtil.getPKUser(request);
+    }
     // 插入用户简历
     @ResponseBody
     @RequestMapping("insertResume")
@@ -50,8 +56,8 @@ public class ResumeController {
             Integer pk_resume = (Integer) jsonParam.get("pk_resume");
             resume.setPk_resume(pk_resume);
         }
-        if (jsonParam.get("pk_user") != null) {
-            Integer pk_user = (Integer) jsonParam.get("pk_user");
+        if (getPk_user() != null) {
+            Integer pk_user = getPk_user();
             resume.setPk_user(pk_user);
         }
         if (jsonParam.get("name") != null) {
@@ -152,8 +158,8 @@ public class ResumeController {
     // 根据用户主键用户简历
     @ResponseBody
     @RequestMapping("getResume")
-    public String getResume(@RequestBody JSONObject jsonParam) {
-        int pk_user = (int) jsonParam.get("pk_user");
+    public String getResume() {
+        int pk_user =  getPk_user();
         Resume resume = resumeService.getResumeByPk_user(pk_user);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
@@ -166,8 +172,7 @@ public class ResumeController {
     @ResponseBody
     @RequestMapping("deleteResume")
     public String deleteResume(@RequestBody JSONObject jsonParam) throws IOException {
-        String pk_user= (String) jsonParam.get("pk_user");
-        resumeService.deleteResume(Integer.valueOf(pk_user));
+        resumeService.deleteResume(getPk_user());
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
@@ -209,9 +214,8 @@ public class ResumeController {
     //获取技能
     @ResponseBody
     @RequestMapping("getSkills")
-    public String getSkills(@RequestBody JSONObject jsonParam) throws IOException {
-        String pk_user= (String) jsonParam.get("pk_user");
-        String skills = resumeService.getSkills(Integer.valueOf(pk_user));
+    public String getSkills() throws IOException {
+        String skills = resumeService.getSkills(getPk_user());
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");

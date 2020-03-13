@@ -16,10 +16,26 @@ public class ResultController {
     private ResultService resultService;
     @Autowired
     private RestTemplate restTemplate;
+
     // 获取活动结果
     @ResponseBody
     @RequestMapping("getResult")
     public String getResult(@RequestBody JSONObject jsonParam) throws Exception {
+        Integer pk_act = (Integer) jsonParam.get("pk_act");
+
+        Result res = resultService.selectResult(pk_act);
+
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        result.put("res", res);
+        return result.toJSONString();
+    }
+
+    // 获取活动结果
+    @ResponseBody
+    @RequestMapping("getResss")
+    public String getResss(@RequestBody JSONObject jsonParam) throws Exception {
         Integer pk_act = (Integer) jsonParam.get("pk_act");
 
         Result res = resultService.selectResult(pk_act);
@@ -49,10 +65,10 @@ public class ResultController {
     @RequestMapping("updateResult")
     public String updateResult(@RequestBody JSONObject jsonParam) throws Exception {
         Integer act = (Integer) jsonParam.get("pk_act");
-        Integer resultCount = (Integer) jsonParam.get("resultCount");
+        String resultCount = (String) jsonParam.get("resultCount");
         Result res = new Result();
         res.setPk_act(act);
-        res.setPk_result(resultCount);
+        res.setResultCount(resultCount);
         resultService.updateResult(res);
         JSONObject result = new JSONObject();
         result.put("code", 20000);

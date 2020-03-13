@@ -27,8 +27,14 @@ public class CompanyController {
     // 获取公司信息
     @ResponseBody
     @RequestMapping("getCompany")
-    public String getCompany() {
-        Company company = companyService.selectCompany(getPk_user());
+    public String getCompany(@RequestBody JSONObject jsonParam) {
+        Company company;
+        if (jsonParam.get("pk_user")!=null){
+            company = companyService.selectCompany((Integer) jsonParam.get("pk_user"));
+
+        }else {
+            company = companyService.selectCompany(getPk_user());
+        }
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");

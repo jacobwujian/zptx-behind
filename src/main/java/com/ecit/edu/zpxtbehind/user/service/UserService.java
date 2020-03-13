@@ -44,4 +44,7 @@ public class UserService {
         return userMapper.checkName(name) == null;
     }
 
+    public void deleteUser(Integer pk_user){
+        userMapper.deleteUser(pk_user);
+    }
 }

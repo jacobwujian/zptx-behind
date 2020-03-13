@@ -65,4 +65,7 @@
         <if test="avatar!=null">,avatar= #{avatar,jdbcType=VARCHAR}</if>
         where pk_user = #{pk_user,jdbcType=INTEGER}
     </update>
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from user where pk_user = #{pk_user,jdbcType=INTEGER}
+    </delete>
 </mapper>

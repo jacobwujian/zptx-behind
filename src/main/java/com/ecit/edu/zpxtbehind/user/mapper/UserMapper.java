@@ -15,4 +15,5 @@ public interface UserMapper {
     void updateUserByPk_user(User user);
     List<User> selectUserByExample(User user);
     User checkName(String name);
+    void deleteUser(Integer pk_user);
 }

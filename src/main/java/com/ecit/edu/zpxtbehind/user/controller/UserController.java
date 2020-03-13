@@ -209,11 +209,11 @@ public class UserController {
     @RequestMapping("selectUserByExample")
     public String selectUserByExample(@RequestBody JSONObject jsonParam) throws Exception {
         User user = new User();
-        String userName = (String) jsonParam.get("searchname");
+        String userName = (String) jsonParam.get("searchName");
         if (userName != null && !userName.isEmpty()) {
             user.setUserName("%" + userName + "%");
         }
-        String chooseRlue = (String) jsonParam.get("chooseRlue");
+        String chooseRlue = (String) jsonParam.get("chooseRule");
         if (chooseRlue != null && !chooseRlue.isEmpty()) {
             user.setUserType(chooseRlue);
         }
@@ -250,6 +250,17 @@ public class UserController {
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("data", userService.checkName(name));
+        return result.toJSONString();
+    }
+
+    // 删除
+    @ResponseBody
+    @RequestMapping(value = "deleteUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public String deleteUser(@RequestBody JSONObject jsonParam) {
+        Integer pk_user = (Integer) jsonParam.get("pk_user");
+        userService.deleteUser(pk_user);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
         return result.toJSONString();
     }
 }
