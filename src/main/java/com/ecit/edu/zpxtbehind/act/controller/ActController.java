@@ -120,9 +120,12 @@ public class ActController {
     @ResponseBody
     @RequestMapping("updateActResultCount")
     public String updateActResultCount(@RequestBody JSONObject jsonParam) {
-        Act act = null;
-        if (jsonParam.get("pk_act")!=null&&jsonParam.get("resultCount")!=null) {
-            act = getActWithRequest(jsonParam);
+        Act act = new Act();
+        if (jsonParam.get("pk_act")!=null) {
+            act.setPk_act((Integer) jsonParam.get("pk_act"));
+        }
+        if (jsonParam.get("resultCount")!=null) {
+            act.setResultCount((String) jsonParam.get("resultCount"));
         }
         actService.updateActResultCount(act);
         JSONObject result = new JSONObject();
