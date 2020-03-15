@@ -9,6 +9,7 @@ public interface ActMapper {
     List<Act> selectActs(Integer pk_user);
     void insertAct(Act act);
     void updateAct(Act act);
+    void updateActResultCount(Act act);
     void deleteAct(Act act);
     List<Act> selectActsByExample(Act act);
     List<Act> selectAllActs();

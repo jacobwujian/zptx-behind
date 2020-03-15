@@ -109,16 +109,6 @@ public class ActController {
     @ResponseBody
     @RequestMapping("updateAct")
     public String updateAct(@RequestBody JSONObject jsonParam) {
-        if (jsonParam.get("endTime")!=null) {
-            JSONObject res = new JSONObject();
-            res.put("pk_act", jsonParam.get("pk_act"));
-            if ((Integer) jsonParam.get("state") == 2) {
-                restTemplate.postForObject("http://127.0.0.1:8123/behind/api/result/insertResult", res, JSONObject.class);
-            } else {
-                restTemplate.postForObject("http://127.0.0.1:8123/behind/api/result/deleteResult", res, JSONObject.class);
-
-            }
-        }
         Act act = getActWithRequest(jsonParam);
         actService.updateAct(act);
         JSONObject result = new JSONObject();
@@ -126,6 +116,21 @@ public class ActController {
         result.put("message", "success");
         return result.toJSONString();
     }
+    // 更新活动筛选条件
+    @ResponseBody
+    @RequestMapping("updateActResultCount")
+    public String updateActResultCount(@RequestBody JSONObject jsonParam) {
+        Act act = null;
+        if (jsonParam.get("pk_act")!=null&&jsonParam.get("resultCount")!=null) {
+            act = getActWithRequest(jsonParam);
+        }
+        actService.updateActResultCount(act);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+
     // 删除活动筛选条件
     @ResponseBody
     @RequestMapping("deleteScreens")

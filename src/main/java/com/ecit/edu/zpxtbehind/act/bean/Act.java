@@ -17,6 +17,15 @@ public class Act {
     private Integer pk_user;
     private String address;
     private String salary;
+    private String resultCount;
+
+    public String getResultCount() {
+        return resultCount;
+    }
+
+    public void setResultCount(String resultCount) {
+        this.resultCount = resultCount;
+    }
 
     public String getAddress() {
         return address;

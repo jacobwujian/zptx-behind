@@ -17,6 +17,7 @@
         <result column="pk_user" jdbcType="INTEGER" property="pk_user"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="salary" jdbcType="VARCHAR" property="salary"/>
+        <result column="resultCount" jdbcType="VARCHAR" property="resultCount"/>
     </resultMap>
     <select id="selectAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultType="com.ecit.edu.zpxtbehind.act.bean.Act">
         select *from act_main where pk_act = #{pk_act, jdbcType=INTEGER}
@@ -61,6 +62,11 @@
         state = #{state, jdbcType=INTEGER},
         address = #{address, jdbcType=VARCHAR,},
         salary = #{salary, jdbcType=VARCHAR}
+        where pk_act = #{pk_act, jdbcType=INTEGER}
+    </update>
+    <update id="updateActResultCount" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
+        update act_main set
+        resultCount = #{resultCount, jdbcType=VARCHAR}
         where pk_act = #{pk_act, jdbcType=INTEGER}
     </update>
     <delete id="deleteAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
