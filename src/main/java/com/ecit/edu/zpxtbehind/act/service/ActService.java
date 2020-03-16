@@ -20,8 +20,8 @@ public class ActService {
         return actMapper.selectActs(pk_user);
     }
 
-    public List<Act> selectAllActs() {
-        return actMapper.selectAllActs();
+    public List<Act> selectAllActs(Act act) {
+        return actMapper.selectAllActs(act);
     }
 
     public void insertAct(Act act) {
