@@ -48,9 +48,19 @@ public class ActController {
     // 获取某个用户的所有活动的部分信息
     @ResponseBody
     @RequestMapping("getAllActs")
-    public String getAllActs() {
-        Integer pk_user = getPk_user();
-        List<Act> acts = actService.selectActs(pk_user);
+    public String getAllActs(@RequestBody JSONObject jsonParam) {
+        Act act = new Act();
+        act.setPk_user(getPk_user());
+        if (jsonParam.get("name")!=null) {
+            act.setAct_name("%"+(String) jsonParam.get("name")+"%");
+        }
+        if (jsonParam.get("job")!=null) {
+            act.setJob((String) jsonParam.get("job"));
+        }
+        if (jsonParam.get("state")!=null){
+            act.setState((Integer) jsonParam.get("state"));
+        }
+        List<Act> acts = actService.selectActs(act);
         JSONObject result = new JSONObject();
         result.put("acts", acts);
         result.put("code", 20000);

@@ -22,14 +22,17 @@
     <select id="selectAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultType="com.ecit.edu.zpxtbehind.act.bean.Act">
         select *from act_main where pk_act = #{pk_act, jdbcType=INTEGER}
     </select>
-    <select id="selectActs" parameterType="java.lang.Integer" resultMap="ActMap">
+    <select id="selectActs" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultMap="ActMap">
        select * from act_main where pk_user = #{pk_user, jdbcType=INTEGER}
+        <if test="act_name != null">and act_name like #{act_name, jdbcType = VARCHAR}</if>
+        <if test="state != null">and state like #{state, jdbcType = INTEGER}</if>
+        <if test="job != null">and job like #{job, jdbcType = VARCHAR}</if>
     </select>
     <select id="selectAllActs" resultMap="ActMap">
        select * from act_main where state = 2
-        <if test="act_name != null">and act_name like #{act_name, jdbcType = INTEGER}</if>
-        <if test="address != null">and address like #{address, jdbcType = INTEGER}</if>
-        <if test="job != null">and job like #{job, jdbcType = INTEGER}</if>
+        <if test="act_name != null">and act_name like #{act_name, jdbcType = VARCHAR}</if>
+        <if test="address != null">and address like #{address, jdbcType = VARCHAR}</if>
+        <if test="job != null">and job like #{job, jdbcType = VARCHAR}</if>
     </select>
     <select id="selectActsByExample" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act" resultMap="ActMap">
        select * from act_main where pk_user = #{pk_user, jdbcType=INTEGER} <if test="state != null">and state = #{state, jdbcType = INTEGER} </if>

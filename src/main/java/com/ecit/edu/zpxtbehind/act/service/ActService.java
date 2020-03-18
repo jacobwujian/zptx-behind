@@ -16,8 +16,8 @@ public class ActService {
         return actMapper.selectAct(act);
     }
 
-    public List<Act> selectActs(Integer pk_user) {
-        return actMapper.selectActs(pk_user);
+    public List<Act> selectActs(Act act) {
+        return actMapper.selectActs(act);
     }
 
     public List<Act> selectAllActs(Act act) {

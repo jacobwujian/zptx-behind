@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ActMapper {
     Act selectAct(Act act);
-    List<Act> selectActs(Integer pk_user);
+    List<Act> selectActs(Act act);
     void insertAct(Act act);
     void updateAct(Act act);
     void updateActResultCount(Act act);
