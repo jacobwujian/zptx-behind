@@ -93,8 +93,8 @@
     <select id="getResumeByPk_user" parameterType="int" resultType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
         select*from resume where pk_user = #{pk_user,jdbcType=INTEGER}
     </select>
-    <select id="getResumeByExample" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select*from resume where #{example,jdbcType=VARCHAR}
+    <select id="getResumes" parameterType="java.lang.String" resultMap="BaseResultMap">
+        ${example}
     </select>
     <delete id="deleteResume" parameterType="int">
         delete from resume where pk_user = #{pk_user, jdbcType=INTEGER}
