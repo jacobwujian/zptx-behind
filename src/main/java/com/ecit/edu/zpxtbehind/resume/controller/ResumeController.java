@@ -34,13 +34,13 @@ public class ResumeController {
     @ResponseBody
     @RequestMapping("insertResume")
     public String insertResume(@RequestBody JSONObject jsonParam) {
+        Integer pk_user = (Integer) jsonParam.get("pk_user");
         String name = (String) jsonParam.get("name");
-        String IDCard = (String) jsonParam.get("IDCard");
         String phone = (String) jsonParam.get("phone");
         Resume resume = new Resume();
         resume.setName(name);
-        resume.setIDCard(IDCard);
         resume.setPhone(phone);
+        resume.setPk_user(pk_user);
         resumeService.insertResume(resume);
         JSONObject result = new JSONObject();
         result.put("code", 20000);

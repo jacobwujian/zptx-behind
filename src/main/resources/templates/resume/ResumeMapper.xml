@@ -41,7 +41,7 @@
         <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
     </resultMap>
 <insert id="insertResume" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
-    insert into resume (pk_user,name,sex,age,email,introduction,city,phone,school1,school2,school3,schoolType1,schoolType2,schoolType3,start1,start2,start3,end1,end2,end3,picture,IDCard,education,skills)
+    insert into resume (pk_user,name,sex,age,email,introduction,city,phone,school1,school2,school3,schoolType1,schoolType2,schoolType3,start1,start2,start3,end1,end2,end3,picture,IDCard,education)
     values (
     #{pk_user,jdbcType=INTEGER},
     #{name,jdbcType=VARCHAR},
@@ -65,9 +65,7 @@
     #{end3,jdbcType=TIMESTAMP},
     #{picture,jdbcType=BLOB},
     #{IDCard,jdbcType=VARCHAR},
-    #{education,jdbcType=VARCHAR},
-    #{skills,jdbcType=VARCHAR},
-    #{works,jdbcType=VARCHAR}
+    #{education,jdbcType=VARCHAR}
     )
 </insert>
     <update id="updateResume" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
