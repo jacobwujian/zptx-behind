@@ -29,7 +29,16 @@
         <result column="picture" jdbcType="BLOB" property="picture"/>
         <result column="IDCard" jdbcType="VARCHAR" property="IDCard"/>
         <result column="education" jdbcType="VARCHAR" property="education"/>
-
+    </resultMap>
+    <resultMap id="WorkMap" type="com.ecit.edu.zpxtbehind.resume.bean.Work">
+        <id column="pk_work" javaType="INTEGER" property="pk_work"/>
+        <result column="pk_user" jdbcType="INTEGER" property="pk_user"/>
+        <result column="companyName" jdbcType="VARCHAR" property="companyName"/>
+        <result column="job" jdbcType="VARCHAR" property="job"/>
+        <result column="workIntroduction" jdbcType="VARCHAR" property="workIntroduction"/>
+        <result column="startTime" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="ts" jdbcType="TIMESTAMP" property="ts"/>
     </resultMap>
 <insert id="insertResume" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
     insert into resume (pk_user,name,sex,age,email,introduction,city,phone,school1,school2,school3,schoolType1,schoolType2,schoolType3,start1,start2,start3,end1,end2,end3,picture,IDCard,education,skills)
@@ -57,7 +66,8 @@
     #{picture,jdbcType=BLOB},
     #{IDCard,jdbcType=VARCHAR},
     #{education,jdbcType=VARCHAR},
-    #{skills,jdbcType=VARCHAR}
+    #{skills,jdbcType=VARCHAR},
+    #{works,jdbcType=VARCHAR}
     )
 </insert>
     <update id="updateResume" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
@@ -102,7 +112,31 @@
     <select id="getSkills" parameterType="int" resultType="java.lang.String">
         select skills from resume where pk_user = #{pk_user, jdbcType=INTEGER}
     </select>
-    <update id="updateSkills" parameterType="java.lang.String">
-        update resume set skills = #{skills, jdbcType=VARCHAR} where pk_usr = #{pk_usr, jdbcType=INTEGER}
+    <update id="updateSkills" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Resume">
+        update resume set skills = #{skills, jdbcType=VARCHAR} where pk_user = #{pk_user, jdbcType=INTEGER}
     </update>
+
+
+    <insert id="insertWork" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Work" keyProperty="pk_work" useGeneratedKeys="true" >
+        insert into work (companyName, job, workIntroduction, startTime, endTime, pk_user) values
+        (#{companyName, jdbcType=VARCHAR},#{job, jdbcType=VARCHAR},#{workIntroduction, jdbcType=VARCHAR},#{startTime, jdbcType=TIMESTAMP},#{endTime, jdbcType=TIMESTAMP},#{pk_user, jdbcType=INTEGER})
+    </insert>
+    <update id="updateWork" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Work">
+        update work set
+        pk_user = #{pk_user,jdbcType=INTEGER}
+        <if test="companyName!=null">,companyName= #{companyName,jdbcType=VARCHAR}</if>
+        <if test="job!=null">,job= #{job,jdbcType=VARCHAR}</if>
+        <if test="workIntroduction!=null">,workIntroduction= #{workIntroduction,jdbcType=VARCHAR}</if>
+        <if test="startTime!=null">,startTime= #{startTime,jdbcType=TIMESTAMP}</if>
+        <if test="endTime!=null">,endTime= #{endTime,jdbcType=TIMESTAMP}</if>
+        where pk_work = #{pk_work,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteWork" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Work">
+        delete from work where 1=1
+        <if test="pk_work!=null"> and pk_work= #{pk_work,jdbcType=INTEGER}</if>
+        <if test="pk_user!=null"> and pk_user= #{pk_user,jdbcType=INTEGER}</if>
+    </delete>
+    <select id="getWorks" parameterType="com.ecit.edu.zpxtbehind.resume.bean.Work" resultMap="WorkMap">
+        select * from work where pk_user = #{pk_user,jdbcType=INTEGER}
+    </select>
 </mapper>

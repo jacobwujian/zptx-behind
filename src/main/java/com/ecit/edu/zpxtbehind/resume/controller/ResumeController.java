@@ -3,6 +3,7 @@ package com.ecit.edu.zpxtbehind.resume.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ecit.edu.zpxtbehind.HeaderParamUtil;
 import com.ecit.edu.zpxtbehind.resume.bean.Resume;
+import com.ecit.edu.zpxtbehind.resume.bean.Work;
 import com.ecit.edu.zpxtbehind.resume.service.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -228,11 +229,82 @@ public class ResumeController {
     @ResponseBody
     @RequestMapping("updateSkills")
     public String updateSkills(@RequestBody JSONObject jsonParam) {
+        Resume resume =new Resume();
         String skills= (String) jsonParam.get("skills");
-        resumeService.updateSkills(skills);
+        resume.setSkills(skills);
+        resume.setPk_user(getPk_user());
+        resumeService.updateSkills(resume);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
         return result.toJSONString();
     }
+    private Work getWorkByJsonParam(JSONObject jsonParam){
+        Work work =new Work();
+        Integer pk_work = (Integer)jsonParam.get("pk_work");
+        String companyName= (String) jsonParam.get("companyName");
+        String job= (String) jsonParam.get("job");
+        Date startTime= new Date((long)( jsonParam.get("startTime")));
+        Date endTime= new Date((long)( jsonParam.get("endTime")));
+        String workIntroduction = (String) jsonParam.get("workIntroduction");
+        work.setCompanyName(companyName);
+        work.setStartTime(startTime);
+        work.setEndTime(endTime);
+        work.setJob(job);
+        work.setWorkIntroduction(workIntroduction);
+        work.setPk_work(pk_work);
+        work.setPk_user(getPk_user());
+        return work;
+    }
+    //增加工作经历
+    @ResponseBody
+    @RequestMapping("insertWork")
+    public String insertWork(@RequestBody JSONObject jsonParam) {
+        Work work = getWorkByJsonParam(jsonParam);
+        resumeService.insertWork(work);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        result.put("work", work);
+        return result.toJSONString();
+    }
+    //修改工作经历
+    @ResponseBody
+    @RequestMapping("updateWork")
+    public String updateWork(@RequestBody JSONObject jsonParam) {
+        Work work = getWorkByJsonParam(jsonParam);
+        resumeService.updateWork(work);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+    //删除工作经历
+    @ResponseBody
+    @RequestMapping("deleteWork")
+    public String deleteWork(@RequestBody JSONObject jsonParam) {
+        Work work =new Work();
+        Integer pk_work= (Integer) jsonParam.get("pk_work");
+        work.setPk_work(pk_work);
+        resumeService.deleteWork(work);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
+
+    //查询工作经历
+    @ResponseBody
+    @RequestMapping("getWorks")
+    public String getWorks() {
+        Work work =new Work();
+        work.setPk_user(getPk_user());
+        List works = resumeService.getWorks(work);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        result.put("works",works);
+        return result.toJSONString();
+    }
+
 }
