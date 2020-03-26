@@ -296,9 +296,13 @@ public class ResumeController {
     //查询工作经历
     @ResponseBody
     @RequestMapping("getWorks")
-    public String getWorks() {
+    public String getWorks(@RequestBody JSONObject jsonParam) {
         Work work =new Work();
-        work.setPk_user(getPk_user());
+        if (jsonParam.get("pk_user")!=null){
+            work.setPk_user((Integer) jsonParam.get("pk_user"));
+        }else {
+            work.setPk_user(getPk_user());
+        }
         List works = resumeService.getWorks(work);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
