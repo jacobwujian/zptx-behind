@@ -36,7 +36,7 @@
         <if test="userType!=null">and userType= #{userType,jdbcType=VARCHAR}</if>
     </select>
     <insert id="insertUser" keyProperty="pk_user" useGeneratedKeys="true" parameterType="com.ecit.edu.zpxtbehind.user.bean.User" >
-        insert into user (userName,userType,password,name,introduction,IDCard,phone,school) values
+        insert into user (userName,userType,password,name,introduction,IDCard,phone) values
         (
         #{userName,jdbcType=VARCHAR},
         #{userType,jdbcType=VARCHAR},
@@ -44,8 +44,7 @@
         #{name,jdbcType=VARCHAR},
         #{introduction,jdbcType=VARCHAR},
         #{IDCard,jdbcType=VARCHAR},
-        #{phone,jdbcType=VARCHAR},
-        #{school,jdbcType=VARCHAR}
+        #{phone,jdbcType=VARCHAR}
         )
     </insert>
     <update id="updateUserPassword" parameterType="com.ecit.edu.zpxtbehind.user.bean.User">

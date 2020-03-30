@@ -45,7 +45,7 @@ public class UserController {
     @RequestMapping("insertUser")
     public String insertUser(@RequestBody JSONObject jsonParam) throws Exception {
         String username = (String) jsonParam.get("userName");
-        String password = jsonParam.get("userName") + (String) jsonParam.get("password1");
+        String password = jsonParam.get("userName") + (String) jsonParam.get("password");
         String name = (String) jsonParam.get("name");
         String userType = (String) jsonParam.get("userType");
         String phone = (String) jsonParam.get("phone");
@@ -58,7 +58,9 @@ public class UserController {
         user.setPhone(phone);
         userService.insertUser(user);
         user.setPassword((String) jsonParam.get("password"));
-        restTemplate.postForObject("http://127.0.0.1:8123/behind/api/resume/insertResume",user,JSONObject.class);
+        if(userType.equals("user")) {
+            restTemplate.postForObject("http://127.0.0.1:8123/behind/api/resume/insertResume", user, JSONObject.class);
+        }
         JSONObject result = new JSONObject();
         result.put("user", user);
         result.put("code", 20000);
