@@ -45,7 +45,13 @@ public class UserController {
     @RequestMapping("insertUser")
     public String insertUser(@RequestBody JSONObject jsonParam) throws Exception {
         String username = (String) jsonParam.get("userName");
-        String password = jsonParam.get("userName") + (String) jsonParam.get("password");
+        String password = username;
+        if (jsonParam.get("password") != null){
+            password  +=   (String) jsonParam.get("password");
+        }else {
+            password  +=   (String) jsonParam.get("password1");
+
+        }
         String name = (String) jsonParam.get("name");
         String userType = (String) jsonParam.get("userType");
         String phone = (String) jsonParam.get("phone");
@@ -161,7 +167,8 @@ public class UserController {
         String pw = new String(decoder.decode(password));
         user.setPassword(username + pw);
         User getUser = userService.login(user);
-        Boolean isTrue = EncryptHelper.unencrypt(getUser.getPassword()).equals(user.getPassword());
+        String reENC =  EncryptHelper.unencrypt(getUser.getPassword());
+        Boolean isTrue = reENC.equals(user.getPassword());
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
