@@ -39,7 +39,9 @@ public class ActService {
     public void deleteAct(Act act) {
         actMapper.deleteAct(act);
     }
-
+    public void deleteActByUser(Integer pk_user) {
+        actMapper.deleteActByUser(pk_user);
+    }
     public List<Act> selectActsByExample(Act act) {
         return actMapper.selectActsByExample(act);
     }

@@ -169,11 +169,11 @@ public class ResumeController {
         return result.toJSONString();
     }
 
-    //删除技能
+    //删除简历
     @ResponseBody
     @RequestMapping("deleteResume")
     public String deleteResume(@RequestBody JSONObject jsonParam) throws IOException {
-        resumeService.deleteResume(getPk_user());
+        resumeService.deleteResume((Integer) jsonParam.get("pk_user"));
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");

@@ -44,8 +44,8 @@ public class CompanyController {
     // 插入公司信息
     @ResponseBody
     @RequestMapping("insertCompany")
-    public String insertCompany() {
-        companyService.insertCompany(getPk_user());
+    public String insertCompany(@RequestBody JSONObject jsonParam) {
+        companyService.insertCompany((Integer) jsonParam.get("pk_user"));
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");
@@ -55,8 +55,8 @@ public class CompanyController {
     // 刪除參公司信息
     @ResponseBody
     @RequestMapping("deleteCompany")
-    public String deleteCompany() {
-        companyService.deleteCompany(getPk_user());
+    public String deleteCompany(@RequestBody JSONObject jsonParam) {
+        companyService.deleteCompany((Integer) jsonParam.get("pk_user"));
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         result.put("message", "success");

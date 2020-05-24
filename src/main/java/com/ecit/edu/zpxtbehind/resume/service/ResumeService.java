@@ -1,5 +1,6 @@
 package com.ecit.edu.zpxtbehind.resume.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ecit.edu.zpxtbehind.resume.bean.Resume;
 import com.ecit.edu.zpxtbehind.resume.bean.Work;
 import com.ecit.edu.zpxtbehind.resume.mapper.ResumeMapper;
@@ -25,8 +26,11 @@ public class ResumeService {
         return resumeMapper.getResumeByPk_user(pk_user);
     }
 
-    public void deleteResume(int pk_user) {
+    public void deleteResume(Integer pk_user) {
         resumeMapper.deleteResume(pk_user);
+        Work work = new Work();
+        work.setPk_user(pk_user);
+        resumeMapper.updateWork(work);
     }
 
     public String getSkills(int pk_user) {

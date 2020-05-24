@@ -78,4 +78,7 @@
     <delete id="deleteAct" parameterType="com.ecit.edu.zpxtbehind.act.bean.Act">
        delete from act_main where pk_act  = #{pk_act, jdbcType=INTEGER}
    </delete>
+    <delete id="deleteActByUser" parameterType="java.lang.Integer">
+       delete from act_main where pk_user = #{pk_user,jdbcType=INTEGER}
+   </delete>
 </mapper>

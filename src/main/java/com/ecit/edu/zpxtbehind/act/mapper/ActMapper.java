@@ -11,6 +11,7 @@ public interface ActMapper {
     void updateAct(Act act);
     void updateActResultCount(Act act);
     void deleteAct(Act act);
+    void deleteActByUser(Integer pk_user);
     List<Act> selectActsByExample(Act act);
     List<Act> selectAllActs(Act act);
 }

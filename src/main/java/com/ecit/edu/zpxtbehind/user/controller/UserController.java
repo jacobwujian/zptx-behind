@@ -67,6 +67,9 @@ public class UserController {
         if(userType.equals("user")) {
             restTemplate.postForObject("http://127.0.0.1:8123/behind/api/resume/insertResume", user, JSONObject.class);
         }
+        if(userType.equals("editor")) {
+            restTemplate.postForObject("http://127.0.0.1:8123/behind/api/company/insertCompany", user, JSONObject.class);
+        }
         JSONObject result = new JSONObject();
         result.put("user", user);
         result.put("code", 20000);
@@ -260,6 +263,9 @@ public class UserController {
     public String deleteUser(@RequestBody JSONObject jsonParam) {
         Integer pk_user = (Integer) jsonParam.get("pk_user");
         userService.deleteUser(pk_user);
+        restTemplate.postForObject("http://127.0.0.1:8123/behind/api/resume/deleteResume", jsonParam, JSONObject.class);
+        restTemplate.postForObject("http://127.0.0.1:8123/behind/api/company/deleteCompany", jsonParam, JSONObject.class);
+        restTemplate.postForObject("http://127.0.0.1:8123/behind/api/act/deleteActByUser", jsonParam, JSONObject.class);
         JSONObject result = new JSONObject();
         result.put("code", 20000);
         return result.toJSONString();

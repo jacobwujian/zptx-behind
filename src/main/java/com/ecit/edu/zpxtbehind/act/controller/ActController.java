@@ -52,7 +52,7 @@ public class ActController {
         Act act = new Act();
         act.setPk_user(getPk_user());
         if (jsonParam.get("name")!=null) {
-            act.setAct_name("%"+(String) jsonParam.get("name")+"%");
+            act.setAct_name("%"+jsonParam.get("name")+"%");
         }
         if (jsonParam.get("job")!=null) {
             act.setJob((String) jsonParam.get("job"));
@@ -74,10 +74,10 @@ public class ActController {
     public String getActsForUser(@RequestBody JSONObject jsonParam) {
         Act act = new Act();
         if (jsonParam.get("address")!=null) {
-            act.setAddress("%"+(String) jsonParam.get("address")+"%");
+            act.setAddress("%"+ jsonParam.get("address")+"%");
         }
         if (jsonParam.get("name")!=null) {
-            act.setAct_name("%"+(String) jsonParam.get("name")+"%");
+            act.setAct_name("%"+ jsonParam.get("name")+"%");
         }
         if (jsonParam.get("job")!=null) {
             act.setJob((String) jsonParam.get("job"));
@@ -175,7 +175,17 @@ public class ActController {
         result.put("message", "success");
         return result.toJSONString();
     }
-
+    // 删除用户所关联的活动
+    @ResponseBody
+    @RequestMapping("deleteActByUser")
+    public String deleteActByUser(@RequestBody JSONObject jsonParam) {
+        Integer pk_user = (Integer) jsonParam.get("pk_user");
+        actService.deleteActByUser(pk_user);
+        JSONObject result = new JSONObject();
+        result.put("code", 20000);
+        result.put("message", "success");
+        return result.toJSONString();
+    }
     private Act getActWithRequest(JSONObject jsonParam){
         Act act = new Act();
         Integer pk_user = getPk_user();
