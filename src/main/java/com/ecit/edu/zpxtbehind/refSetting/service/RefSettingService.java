@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class RefSettingService {
@@ -47,17 +46,22 @@ public class RefSettingService {
         return refSettingMapper.selectRefTypeByPk_type(refTypeSetting);
     }
 
-    public void deleteType(RefTypeSetting refTypeSetting) {
+    public boolean deleteType(RefTypeSetting refTypeSetting) {
         refTypeSetting = refSettingMapper.selectRefTypeByPk_type(refTypeSetting);
-        refSettingMapper.deleteType(refTypeSetting);
-        Integer pk_type = refTypeSetting.getPk_type();
-        while (refTypeSetting.getParent() != null) {
-            refTypeSetting.setPk_type(refTypeSetting.getParent());
-            refTypeSetting = refSettingMapper.selectRefTypeByPk_type(refTypeSetting);
-            ArrayList arrayList = refTypeSetting.getChildrenArry();
-            arrayList.remove(String.valueOf(pk_type));
-            refTypeSetting.setChildrenArry(arrayList);
-            refSettingMapper.resetChildren(refTypeSetting);
+        if (refTypeSetting.getChildren().equals("[]")) {
+            refSettingMapper.deleteType(refTypeSetting);
+            Integer pk_type = refTypeSetting.getPk_type();
+            while (refTypeSetting.getParent() != null) {
+                refTypeSetting.setPk_type(refTypeSetting.getParent());
+                refTypeSetting = refSettingMapper.selectRefTypeByPk_type(refTypeSetting);
+                ArrayList arrayList = refTypeSetting.getChildrenArry();
+                arrayList.remove(String.valueOf(pk_type));
+                refTypeSetting.setChildrenArry(arrayList);
+                refSettingMapper.resetChildren(refTypeSetting);
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 

@@ -53,11 +53,16 @@ public class RefSettingController {
     public String deleteType(@RequestBody JSONObject jsonParam) {
         RefTypeSetting refTypeSetting = new RefTypeSetting();
         refTypeSetting.setPk_type((Integer) jsonParam.get("pk_type"));
-        refSettingService.deleteType(refTypeSetting);
-        refSettingService.deleteRefByType(refTypeSetting);
+        boolean canDelete = refSettingService.deleteType(refTypeSetting);
         JSONObject result = new JSONObject();
-        result.put("code", 20000);
-        result.put("message", "success");
+        if (canDelete) {
+            refSettingService.deleteRefByType(refTypeSetting);
+            result.put("code", 20000);
+            result.put("message", "success");
+        } else {
+            result.put("code", 20001);
+            result.put("message", "無法刪除有子節點數據");
+        }
         return result.toJSONString();
     }
     // 参照改名

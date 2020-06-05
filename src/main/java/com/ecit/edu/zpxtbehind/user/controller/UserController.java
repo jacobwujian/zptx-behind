@@ -1,6 +1,7 @@
 package com.ecit.edu.zpxtbehind.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ecit.edu.zpxtbehind.HeaderParamUtil;
 import com.ecit.edu.zpxtbehind.user.EncryptHelper;
 import com.ecit.edu.zpxtbehind.user.bean.User;
 import com.ecit.edu.zpxtbehind.user.service.UserService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -22,6 +24,11 @@ public class UserController {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    HttpServletRequest request;
+    private Integer getPk_user() {
+        return HeaderParamUtil.getPKUser(request);
+    }
     // 获取所有用户信息
     @ResponseBody
     @RequestMapping("getAllUsers")
@@ -84,50 +91,51 @@ public class UserController {
         int pk_user = (Integer) jsonParam.get("pk_user");
         User user = new User();
         user.setPk_user(pk_user);
-
-        String username = (String) jsonParam.get("userName");
-        if (username !=null){
+        String username;
+        String password;
+        if(jsonParam.get("userName")!=null) {
+            username = (String) jsonParam.get("userName");
             user.setUserName(username);
-            String password = jsonParam.get("userName") + (String) jsonParam.get("password");
-            if ( jsonParam.get("password") !=null){
+            if (jsonParam.get("password") != null) {
+                password = jsonParam.get("userName") + (String) jsonParam.get("password");
                 password = encrypt(password);
                 user.setPassword(password);
             }
         }
-
-        String name = (String) jsonParam.get("name");
-        if (name!= null){
+        String name;
+        if ( jsonParam.get("name")!= null){
+            name = (String) jsonParam.get("name");
             user.setName(name);
         }
-        String userType = (String) jsonParam.get("userType");
-        if (userType!=null){
+        String userType ;
+        if (jsonParam.get("userType")!=null){
+            userType = (String) jsonParam.get("userType");
             user.setUserType(userType);
-
         }
-        String introduction = (String) jsonParam.get("introduction");
-        if (introduction!=null){
+        String introduction;
+        if (jsonParam.get("introduction")!=null){
+            introduction = (String) jsonParam.get("introduction");
             user.setIntroduction(introduction);
-
         }
-        String avatar = (String) jsonParam.get("avatar");
-        if (avatar!=null){
+        String avatar;
+        if (jsonParam.get("avatar")!=null){
+            avatar = (String) jsonParam.get("avatar");
             user.setAvatar(avatar);
-
         }
-        String IDCard = (String) jsonParam.get("IDCard");
-        if (IDCard!=null){
+        String IDCard;
+        if (jsonParam.get("IDCard")!=null){
+            IDCard = (String) jsonParam.get("IDCard");
             user.setIDCard(IDCard);
-
         }
-        String phone = (String) jsonParam.get("phone");
-        if (phone!=null){
+        String phone;
+        if (jsonParam.get("phone")!=null){
+            phone = (String) jsonParam.get("phone");
             user.setPhone(phone);
-
         }
-        String school = (String) jsonParam.get("school");
-        if (school!=null){
+        String school;
+        if (jsonParam.get("school")!=null){
+            school = (String) jsonParam.get("school");
             user.setSchool(school);
-
         }
 
         userService.updateUserByPk_user(user);
@@ -141,20 +149,24 @@ public class UserController {
     @ResponseBody
     @RequestMapping("updateUserPassword")
     public String updateUserPassword(@RequestBody JSONObject jsonParam) throws Exception {
-        String username = (String) jsonParam.get("pk_user");
-        String newpassword = (String) jsonParam.get("newpassword");
-        String password = (String) jsonParam.get("password");
+        Integer pk_user = getPk_user();
         User user = new User();
-        user.setUserName(username);
-        Base64.Decoder decoder = Base64.getDecoder();
-        String pw = new String(decoder.decode(password));
-        password = encrypt(username + pw);
-        user.setPassword(password);
-        userService.selectUserByPk_user(user);
-        userService.updateUserPassword(user);
+        user.setPk_user(pk_user);
+        user =  userService.selectUserByPk_user(user);
+        String oldPassword = EncryptHelper.unencrypt(user.getPassword());
+        String getOldPassword =user.getUserName()+jsonParam.get("oldPwd");
         JSONObject result = new JSONObject();
-        result.put("code", 20000);
-        result.put("message", "success");
+        if (oldPassword.equals(getOldPassword)){
+            String password = encrypt(user.getUserName()+jsonParam.get("newPwd"));
+            user.setPassword(password);
+            userService.updateUserPassword(user);
+            result.put("code", 20000);
+            result.put("message", "success");
+        }
+        else {
+            result.put("code", 20001);
+            result.put("message", "旧密码不正确");
+        }
         return result.toJSONString();
     }
 
@@ -171,14 +183,16 @@ public class UserController {
         user.setPassword(username + pw);
         User getUser = userService.login(user);
         String reENC =  EncryptHelper.unencrypt(getUser.getPassword());
-        Boolean isTrue = reENC.equals(user.getPassword());
+        boolean isTrue = reENC.equals(user.getPassword());
         JSONObject result = new JSONObject();
-        result.put("code", 20000);
-        result.put("message", "success");
-        result.put("result", isTrue);
         if (isTrue) {
+            result.put("code", 20000);
+            result.put("message", "success");
             user.setPk_user(getUser.getPk_user());
             result.put("token", user);
+        } else {
+            result.put("code", 20001);
+            result.put("message", "登陆失败，账号不存在或账号密码不一致");
         }
         return result.toJSONString();
     }
